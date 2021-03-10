@@ -1,0 +1,69 @@
+DELETION OF NODE IN BST
+
+
+*****Concept*****
+    Part 1 -- Finding the node that needs to be deleted
+	
+      1) If val of root  == key , we found our key element
+      2) If not found , Go to the left and right subtree
+
+    Part 2 -- If element is found 
+
+      - Count the children of key node (node that need to be deleted)
+        Try thinking .... If key node has 0 child, 1 child or 2 child .... Then how to delete key node ....
+
+        Divide the problem
+        1) 0 Child(or leaf node) --- if the key node has  0 child then we just delete that node
+        2) 1 Child --- If the key node has exactly 1 child then to delete the key node , we first have to establish a link 
+                       between left/right subtree of key node with their parent node , then we have to delete the key node      
+        3) 2 Child --- This is the most tricky one .....
+                    Question: After deletion of key node ,Which one would take a place for key node?? left or right child.. ??
+
+                     Answer : We could find the largest value node in  left subtree of key node and replace it's value with 
+					          key node value , then recursively call the deleteNode function to delete that  largest  node .
+                              In this way , we maintain the property of BST.
+                              
+                              
+****Code****
+class Solution {
+public:
+    int maxval(TreeNode* root){
+        if(root -> right == NULL)return root -> val;
+        return maxval(root -> right);
+    }
+    
+    TreeNode* deleteNode(TreeNode* root, int key) {        
+        if(!root) return NULL;
+        
+        TreeNode* temp = NULL;
+        
+        if( root -> val == key){
+            //0 child , 1 child , 2 child
+            if( !root -> right and  !root -> left){ // 0 child
+                return NULL;
+            }
+            
+            else if( !root ->right  or !root -> left){ // 1 child
+                if(root -> left){// if left child exists
+                    temp = root -> left;
+                    delete( root);
+                    return temp;
+                }
+                else if( root -> right){// if right child exists
+                    temp = root -> right;
+                    delete( root);
+                    return temp;
+                }
+            }
+            else // 2 child
+            {
+                root -> val = maxval(root -> left);// replacing the key node value with largest node value in left subtree
+                root -> left = deleteNode(root -> left,root -> val );// deletion of largest node value in left subtree 
+                return root;  
+            }
+        }
+        root -> left = deleteNode(root -> left , key);
+        root -> right= deleteNode(root -> right , key);
+        return root; 
+    }
+};
