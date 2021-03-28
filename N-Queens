@@ -1,0 +1,67 @@
+// Leetcode --- NQueens
+
+class Solution {
+public:
+    vector<vector<string>> res;
+    bool Is_queen_safe(vector<string>& chess, int row , int col){
+        
+        for(int i = row , j= col ; i>=0 ;i--){// checking in upper direction
+            if(chess[i][j] == 'Q'){
+                return false;
+            }   
+        }
+        
+         for(int i = row , j= col ; i>=0 and j>=0;i-- ,j--){// checking in left diagonal
+            if(chess[i][j] == 'Q'){
+                return false;
+            }   
+         }
+           
+        for(int i = row , j= col ; i>=0 and j< chess.size();i-- , j++){// checking in right diagonal
+            if(chess[i][j] == 'Q'){
+                return false;
+            }   
+        }
+        return true;
+        
+        
+    }
+    void helper(vector<string>& chess , int row ){
+        if(row == chess.size()){
+            res.push_back(chess);
+            return ;
+        }
+        for(int i=0;i<chess.size() ;i++){
+
+           if( Is_queen_safe(chess, row , i)){
+                 chess[row][i] = 'Q';
+                 helper(chess , row + 1);
+                 chess[row][i] = '.';
+            }
+        }   
+    }
+    vector<vector<string>> solveNQueens(int n) {
+    
+        
+        string s;
+        for(int i=0;i<n;i++){
+            s.push_back('.');
+        }
+        
+       vector<string> chess(n, s);
+        
+      // initializing a chessboard with -
+        // . . . .
+        // . . . .
+        // . . . .
+        // . . . .
+    // this is a chessboard containing string on each row initilizing with n dots 
+        
+        
+       int row = 0;
+
+       helper(chess ,  row );
+        return res;
+        
+    }
+};
