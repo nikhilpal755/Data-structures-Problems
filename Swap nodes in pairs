@@ -1,0 +1,47 @@
+https://leetcode.com/problems/swap-nodes-in-pairs/
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+ 
+ ------------------------------------RECURSIVE SOLUTION----------------------------------------
+class Solution {
+public:
+    
+    ListNode* swapPairs(ListNode* head) {
+    
+    
+        if(head == NULL)return NULL;
+        if(head -> next == NULL){
+            return head;
+        }
+        
+        //  1 -> 2 -> 3 -> 4
+        // After swapping  =  2 -> 1 -> 4 -> 3
+        
+        
+        // 1. Think.... what will be the newhead after the swapping nodes in pairs ?
+        // --> Assign newhead pointer
+        // 2. Now , What should we do - either swap the current pair or recurse first ?
+        // --> If we swap the current pair (1 -> 2 ==> 2 -> 1) then we will never be able to traverse furthur
+        //     Therefore, we will recurse first.
+        //     Expectation - we will return newhead after swapping nodes in pairs
+        //     faith -  we will assume that , we'll get head with all pairs are swapped except the current one.
+        //     faith to expectation - we just swap the current pair and return the newhead;
+        
+        ListNode* newhead = head -> next;
+        head -> next = swapPairs(newhead -> next);   
+        newhead -> next = head;
+        return newhead;
+       
+        
+        
+    }
+};
