@@ -1,15 +1,5 @@
 https://leetcode.com/problems/swap-nodes-in-pairs/
 
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
  
  ------------------------------------RECURSIVE SOLUTION----------------------------------------
 class Solution {
@@ -40,6 +30,90 @@ public:
         head -> next = swapPairs(newhead -> next);   
         newhead -> next = head;
         return newhead;
+       
+        
+        
+    }
+};
+
+
+--------------------- Think of iterative sol ----------------------------------
+
+/*
+       #---->@---->@---->@---->@---->@---->@
+                   ^     ^
+                   pre   cur
+
+      1. pre->next = cur->next
+                    __________
+                   /          \
+       #---->@---->@     @---->@---->@---->@
+                   ^     ^
+                   pre   cur
+
+      2. pre = pre->next
+                    __________
+                   /          \
+      #---->@---->@      @---->@---->@---->@
+                         ^     ^
+                         cur   pre
+
+      3. cur->next = pre->next
+                    __________
+                   /          \
+       #---->@---->@     @     @---->@---->@
+                          \_________/
+                         ^     ^
+                         cur   pre
+
+      4. pre->next = cur
+                   __________
+                  /          \
+      #---->@---->@     @<----@     @---->@
+                         \_________/
+                        ^     ^
+                        cur   pre
+    
+      5. pre = cur; cur = cur->next
+                   __________
+                  /          \
+      #---->@---->@     @<----@     @---->@
+                         \_________/
+                        ^           ^
+                        pre         cur
+                        
+                        
+                        
+     ------------------- code ------------------
+ 
+ 
+class Solution {
+public:
+    
+    ListNode* swapPairs(ListNode* head) {
+    
+    
+        if(head == NULL)return NULL;
+        if(head -> next == NULL){
+            return head;
+        }
+        
+        
+        ListNode* curr = head;
+        ListNode* temp = new ListNode(0);
+        temp -> next= head;
+        ListNode* prev = temp;
+        
+        while(curr and curr -> next){
+            prev -> next = curr -> next;
+            prev = prev -> next;
+            curr -> next = prev -> next;
+            prev -> next = curr;
+            prev= curr;
+            curr = curr -> next;
+        }
+        
+    return temp -> next;    
        
         
         
