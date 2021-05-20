@@ -1,0 +1,129 @@
+
+----------------------------------------- Merge Sort -------------------------------------------------
+1) Top- Down approach (Recursive)
+
+class Solution {
+public:
+   void merge(vector<int>&nums , int l , int mid , int r){
+        vector<int>a, b;
+        for(int i=l ;i <=mid ;i++){
+            a.push_back(nums[i]);
+        }
+        for(int i=mid+1 ; i<=r ;i++){
+            b.push_back(nums[i]);
+        }
+        
+        int i=0 , j=0 , k=l;
+        // two pointers
+        while(i < a.size() and j < b.size()){
+            if(a[i] <= b[j]){
+                nums[k]= a[i];
+                i++;
+                k++;
+                continue;
+            }
+            else if(a[i] > b[j]){
+                nums[k] = b[j];
+                j++;
+                k++;
+            }
+        }
+        while(i < a.size()){
+           nums[k] = a[i];
+            i++; 
+            k++;
+        }
+        while(j < b.size()){
+            nums[k] = b[j];
+            j++;
+            k++;
+        }
+      
+       
+    }
+    void merge_sort(vector<int>&nums , int l , int r){
+        if(l == r)return;// base -- when we have only one element
+
+        // dividing
+        int mid = (l+r)/2;
+        merge_sort(nums , l , mid);
+        merge_sort(nums , mid+1 , r);
+
+        // merging
+        merge(nums , l , mid , r);
+        
+    }
+    vector<int> sortArray(vector<int>& nums) {
+       // using merge sort
+        merge_sort(nums , 0 , nums.size() -1);
+        return nums;
+        
+    }
+};
+
+
+
+
+2) Bottom - Up approach ( Iterative)
+   refrence-- http://www.mathcs.emory.edu/~cheung/Courses/171/Syllabus/7-Sort/merge-sort5.html
+   refrence-- https://www.geeksforgeeks.org/iterative-merge-sort/
+class Solution {
+public:
+    int min(int a , int b){
+        if(a > b)return b;
+        return a;
+    }
+   void merge(vector<int>&nums , int l , int mid , int r){
+        vector<int>a, b;
+        for(int i=l ;i <=mid ;i++){
+            a.push_back(nums[i]);
+        }
+        for(int i=mid+1 ; i<=r ;i++){
+            b.push_back(nums[i]);
+        }
+        
+        int i=0 , j=0 , k=l;
+        while(i < a.size() and j < b.size()){
+            if(a[i] <= b[j]){
+                nums[k]= a[i];
+                i++;
+                k++;
+                continue;
+            }
+            else if(a[i] > b[j]){
+                nums[k] = b[j];
+                j++;
+                k++;
+            }
+        }
+        while(i < a.size()){
+           nums[k] = a[i];
+            i++; 
+            k++;
+        }
+        while(j < b.size()){
+            nums[k] = b[j];
+            j++;
+            k++;
+        }
+      
+       
+    }
+    
+    vector<int> sortArray(vector<int>& nums) {
+       // using merge sort
+      // bottom up  -- iterative
+        
+       for(int width = 1 ; width <nums.size() ; width = width*2){// taking all window widths
+           
+           for(int i=0 ;i<nums.size() ; i= i +2*width){// iterating over all elements with same window width
+               // taking left and right pointers
+               int l = i;
+               int r = min(i + 2*width - 1 , nums.size() -1); // for odd length
+               int mid = min(i + width-1 , nums.size() -1 );
+               merge(nums , l , mid , r);
+           }
+       }
+        return nums;
+    }
+};
