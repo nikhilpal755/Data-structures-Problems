@@ -1,0 +1,84 @@
+// Given an array of integers where each element represents the max number of steps that can be made forward from that element. Find the minimum number of jumps to reach the end of the array (starting from the first element). If an element is 0, then you cannot move through that element.
+
+// Example 1:
+
+// Input:
+// N=11
+// arr=1 3 5 8 9 2 6 7 6 8 9
+// Output: 3
+// Explanation:
+// First jump from 1st element to 2nd
+// element with value 3. Now, from here
+// we jump to 5th element with value 9,
+// and from here we will jump to last.
+
+
+// --------------------------------------------------APPROACH --------------------------------------------
+// USING SLIDING WINDOW
+        //basically , hm  min jump mein last index tk pahunchna chahte hain....
+        // we will treat element as a window size 
+        // for the index i , our window starts from i+1 and size = a[i]
+        // now we will iterate over our window and try to find a particular index such that we will reach the max index in our array
+        // --- a[i] + i -->> maximum reach for index i with jump=a[i] 
+        // we will return that particular index(idx) and then for next window ,we will start from that idx+1
+
+        // Meanwhile , we have two cases --
+        // if we reach our destination -->> then we increment our answer and break
+        // if idx == -1 -->> reaching the destination is not possible -->> answer = -1  and break;
+        // 
+
+
+        
+    
+
+        //get the index from we can reach till max index of array
+        //ex:{1 3 5 8 9 2 6 7 6 8 9}
+        //starting from 0th index we have window size is 1 (arr[0])
+        //at index 1 we have window size is 3 (arr[1]) = result = 1
+        //here we have 3 elements{5, 8 ,9}
+        //as from index 4 we can reach maximum in index in array
+        // selecting index 4 as new index = result = 2;
+        // now at index 4 we have window size 9 and we will reach at end of array
+        // the base case will execute = result = 3;
+
+class Solution{
+  public:
+    int minJumps(int arr[], int n){
+        // sliding window
+        int ans = 0;// min_jump_needed
+        for(int i=0 ;i<n ;){
+            if(arr[i] + i >= n-1){ // we reach the last index
+                ans++;
+                break;
+            }
+            int window_size = arr[i];
+           int max_jump_index =  next_window(arr , i+1 ,window_size );
+          
+            if(max_jump_index <= 0){
+                ans = -1;
+                break;
+                
+             }
+           i= max_jump_index;
+           ans++;
+
+        }
+        return ans;
+
+    }
+
+    int next_window(int arr[] , int index ,int window_size){
+        int idx = -1;
+        int max_so_far = -1;
+        for(int i=index ; i< index + window_size ; i++){
+            int jump = arr[i] + i;
+            if(jump >= max_so_far){
+                max_so_far = jump;
+                idx = i ;
+            }
+        }
+
+        return idx;
+
+    }
+};
