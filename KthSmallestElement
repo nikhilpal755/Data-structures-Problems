@@ -1,0 +1,94 @@
+REFRENCE -- https://www.geeksforgeeks.org/kth-smallestlargest-element-unsorted-array-set-2-expected-linear-time/
+
+Given an array arr[] and a number K where K is smaller than size of array, the task is to find the Kth smallest element in the given array. 
+It is given that all array elements are distinct.
+
+Time - O(N)
+space - O(1)
+
+Example 1:
+
+Input:
+N = 6
+arr[] = 7 10 4 3 20 15
+K = 3
+Output : 7
+Explanation :
+3rd smallest element in the given 
+array is 7.
+
+----------------------------- Approach ---------------------------
+
+1)
+Time - O(NlogN)
+space - O(1)
+
+just sort the array and return  the k-1 index element
+
+2)
+Time - O(N)
+space - O(N)
+
+Using freq array , we can store the freq of all elements . As the all the elements are distinct so  Max-freq of any element = 1
+we will iterate over the freq array and return the kth element having freq = 1
+
+/** code **/
+#define MAX  100005
+class Solution{
+    public:
+    // arr : given array
+    // l : starting index of the array i.e 0
+    // r : ending index of the array i.e size-1
+    // k : find kth smallest element and return using this function
+    bool f[MAX]= {false};
+    int kthSmallest(int arr[], int l, int r, int k) {
+        for(int i=0 ;i< r-l+1 ; i++){
+            f[arr[i]]=true;
+        }
+        int ans = -1;
+        int cnt = 0;
+        for(int i=0 ; i<MAX ;i++){
+            if(f[i] == true)cnt++;
+            
+            if(cnt == k){
+                ans = i;
+                break;
+            }
+        }
+     return ans;
+   
+    
+
+    }
+};
+
+// Using prority queue
+
+// Time - O(NlogN) , logN for push and pop operations
+// Space - O(N)
+
+class Solution{
+    public:
+    // arr : given array
+    // l : starting index of the array i.e 0
+    // r : ending index of the array i.e size-1
+    // k : find kth smallest element and return using this function
+    int kthSmallest(int arr[], int l, int r, int k) {
+        priority_queue<int > q;
+        int cnt = 0;
+       
+       for(int i=l ; i<=r ;i++){
+           q.push(arr[i]);
+           cnt++;
+           if(cnt > k){
+               q.pop();
+           }
+       }
+   
+   return q.top();
+   
+    
+
+    }
+};
+
