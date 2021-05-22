@@ -1,0 +1,56 @@
+  
+
+Question : https://leetcode.com/problems/kth-largest-element-in-an-array/
+Good Editorial : https://leetcode.com/problems/kth-largest-element-in-an-array/discuss/60309/C%2B%2B-STL-partition-and-heapsort
+Vedio Editorial : https://youtu.be/fnbImb8lo88
+
+------------------------------ QUICKSELECT METHOD --------------------------------------
+class Solution {
+public:
+    int Partition(vector<int>&nums , int low , int high , int pivot){
+       int i=low , j = low ;
+        while(i <= high){
+            if(nums[i] <= pivot){
+                swap(nums[i] , nums[j]);
+                i++;
+                j++;
+            }else{
+                i++;
+            }
+        }
+        return j-1;
+    }
+    int quickSelect(vector<int>&nums , int low , int high , int k){
+        // Selecting a pivot
+        int pivot = nums[high];
+        int partition_idx= Partition(nums, low , high , pivot);
+        
+        if(partition_idx > k){
+            return quickSelect(nums, low , partition_idx - 1, k);
+        }else if(partition_idx < k){
+            return quickSelect(nums , partition_idx + 1, high , k);
+        }else{
+            return pivot;
+        }
+    }
+    int findKthLargest(vector<int>& nums, int k) {
+
+        // Kth largest element is ( nums.size() - k)th smallest element
+        return quickSelect(nums , 0 , nums.size() -1 ,nums.size()-k);
+              
+        
+    }
+};
+
+Average Time : O(N)
+        In average, this algorithm reduces the size of the problem by approximately one half after each partition, giving the recurrence 
+        T(n) = T(n/2) + O(n) with O(n) being the time for partition. The solution is T(n) = O(n), which means we have found an average
+        linear-time solution.However, in the worst case, the recurrence will become T(n) = T(n - 1) + O(n) and T(n) = O(n^2).
+Worst Time : O(N^2) --> when the array is initially sorted and we pick last element as a pivot
+            then, We have N + N-1 + N-2 + N-3 + ........ + 1 Comparisions in total , This is O(N^2)
+
+We could decrease worst case by picking a random pivot 
+
+            
+
+        
