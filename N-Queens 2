@@ -1,0 +1,118 @@
+Question: https://leetcode.com/problems/n-queens-ii/
+
+class Solution {
+private : 
+    int ans = 0;
+    // Checking if queen is safe or not !!!!
+    
+    bool Is_queen_safe(vector<vector<int>>& board , int row , int col){
+        // up
+        for(int i=row , j= col ; i>=0 ; i--){
+            if(board[i][j] == 1){
+               return false;
+            }
+        }
+        
+        // diagnoal left
+        for(int i=row , j=col ; i>=0 and j>=0 ; j-- , i--){
+            if(board[i][j] == 1){
+                return  false;
+            }
+        }
+        
+        // diagonal right
+        for(int i=row , j=col ; i>=0 and j < board.size() ; j++ , i--){
+            if(board[i][j] == 1){
+                return false;
+            }
+        }
+        
+        return true;
+        
+    }
+public:
+  // we need helper function -->> 
+  // we are moving row-wise , and if we found a safe position for queen then we move to next row. So , we need to pass row value to our function and as row reaches
+  // n (row == n)  , we knew that we found a combinaton of placing queens in N*N matrix -->> we increment our answer and return.
+  // if we are not able to find the safe position for our queen in next row, we will backtrack from there and move furthur in current row .
+  
+   void helper(vector<vector<int>>& board , int row ){
+        if(row == board.size()){
+            ans++;
+            return;
+        }
+        for(int j=0 ;j<board.size() ; j++){// iterating over col
+            if(Is_queen_safe(board , row ,j )){
+                board[row][j] = 1;// placing queen
+                helper(board, row+ 1);
+                board[row][j] = -1;// if there is no place for queen in row+1 , then we remove the current queen
+                // postiton -- backtrack    
+            } 
+        }
+        
+    }
+    
+    int totalNQueens(int n) {
+        // create N*N board
+        vector<vector<int>> board(n ,vector<int> (n , -1));
+       
+        helper(board , 0 );
+        
+        
+        return ans;
+        
+        
+        
+    }
+};
+
+
+// Optimization of Is_queen_Safe() function--
+// for each cell , we are taking O(N) time to check if queen is safe or not !!
+// We can change it to O(1) by Using Bitset
+
+// Using Bitset and Backtracking
+
+class Solution {
+private : 
+    int ans = 0;
+    bitset<20> left_diagonal , right_diagonal ,upper_col;
+   void queen(vector<vector<int>>& board , int row , int n ){
+        if(row == board.size()){
+            ans++;
+            return;
+        }
+        for(int j=0 ;j<board.size() ; j++){// iterating over col
+            if(upper_col[j] == 0 and right_diagonal[row + j] == 0  and left_diagonal[row -j + n-1] == 0){
+                // we check if queen is not present is upper_col , left_diaonal , right_diagonal
+                
+                upper_col[j] = right_diagonal[row + j] = left_diagonal[row - j + n -1] = 1;// we put a queen 
+                // mtlb ab hm  iss upper_col , right_diagonal , left_diagonal mein queen nhi rkh skte aage
+                
+                // now we have to call our next row
+                queen(board , row+1 , n);
+                
+                
+                // if we are not able to place any queen in next row , then we backtrack and move furthur
+                upper_col[j] = right_diagonal[row + j] = left_diagonal[row -j + n-1] = 0;
+                   
+            } 
+        }
+        
+    }
+    
+public:
+    
+    int totalNQueens(int n) {
+        // create N*N board
+        vector<vector<int>> board(n ,vector<int> (n , 0));
+       
+        queen(board , 0 , n);
+        
+        
+        return ans;
+        
+        
+        
+    }
+};
