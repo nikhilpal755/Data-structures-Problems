@@ -1,0 +1,67 @@
+Question : https://leetcode.com/problems/combinations/
+
+
+------------My first Trail---------------
+
+class Solution {
+    vector<vector<int>> res;
+    bool is_valid(vector<int>& v , int option){
+        for(int i=0 ;i<v.size() ;i++){
+            if(v[i] >= option )return false;
+        }
+        
+        return true;
+    }
+    void helper(int n , int k , int curr , vector<int>&v){
+        if(curr == k){
+            res.push_back(v);
+            return;
+        }
+        for(int j=1 ; j<= n ;j++){// diffenent options
+            if(is_valid(v, j) ){
+                v.push_back(j);
+                
+                helper( n , k , curr + 1 , v );
+                v.pop_back();
+            }        
+        }
+    }
+public:
+    vector<vector<int>> combine(int n, int k) {
+        vector<int> v;
+        helper(n , k , 0 , v );
+       
+        return res;
+        
+        
+    }
+};
+
+-------- Second Method -----------------
+
+class Solution {
+    vector<vector<int>> res;
+    void dfs(int n , int k ,int pos, vector<int>& v){
+        if(v.size() == k){
+            res.push_back(v);
+            return;
+        }
+        
+        for(int i=pos ; i<= n ;i++){
+            v.push_back(i);
+            dfs(n , k , i + 1 , v );
+            v.pop_back();
+        }
+    }
+    
+public:
+    vector<vector<int>> combine(int n, int k) {
+        vector<int> v;
+        dfs(n , k , 1 , v);
+       
+        return res;
+        
+        
+    }
+};
+
