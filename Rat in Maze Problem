@@ -1,0 +1,46 @@
+Question : https://practice.geeksforgeeks.org/problems/rat-in-a-maze-problem/1#
+
+
+/* Solution */
+
+
+//---------------- Backtracking ---------------
+
+#define MAX  5
+class Solution{
+    vector<string> res;
+    public:
+    
+    void helper(vector<vector<int>> &m , int n , int i , int j , int vis[][MAX], string curr ){
+        if(i < 0 or i == n or j < 0 or j == n or m[i][j] == 0 or vis[i][j] == 1){
+            return;
+        }        
+        if(i== n-1 and j == n-1){
+            vis[i][j] = 0;
+            res.push_back(curr);
+
+            return;
+        }
+        vis[i][j] = 1;
+        helper(m , n , i+1 , j , vis , curr+'D');
+        helper(m , n , i , j-1 , vis , curr+'L');
+        helper(m , n , i , j+1 , vis , curr+'R');
+        helper(m , n , i-1 , j , vis , curr+'U');
+        vis[i][j] = 0;
+    }
+    vector<string> findPath(vector<vector<int>> &m, int n) {
+        // Your code goes here
+        int vis[MAX][MAX];
+        string curr= "";
+        for(int i=0 ; i<MAX ;i++){
+            for(int j=0 ;  j< MAX ;j++){
+                vis[i][j] = 0;
+            }
+        }
+        helper(m , n , 0 , 0 , vis , curr);
+        return res;
+        
+        
+        
+    }
+};
