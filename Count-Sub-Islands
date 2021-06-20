@@ -1,0 +1,56 @@
+Refrence - https://leetcode.com/problems/count-sub-islands/
+
+DFS on 2D grid
+----------------------------------------------------------------------------------------------------------------
+
+
+class Solution {
+public:
+    void DFS(vector<vector<int>>& grid1, vector<vector<int>>& grid2 , vector<vector<bool>>& vis , int i , int j , int& cnt){
+        if( i < 0 or j < 0 or i == grid2.size() or j == grid2[0].size() or vis[i][j] or grid2[i][j]==0){
+            return;
+        }
+        
+        if(grid1[i][j] == 0){
+            cnt = 0;
+        }
+         vis[i][j] = true;
+         DFS(grid1, grid2 , vis , i , j + 1, cnt);
+         DFS(grid1, grid2 , vis , i + 1, j , cnt);
+         DFS(grid1, grid2 , vis , i , j - 1 , cnt);
+         DFS(grid1, grid2 , vis , i - 1, j , cnt);
+        
+        
+        
+        
+    }
+    int countSubIslands(vector<vector<int>>& grid1, vector<vector<int>>& grid2) {
+        int n = grid1.size() , m = grid1[0].size();
+        vector<vector<bool>> vis( n , vector<bool> (m , false));
+        
+        // just doing dfs on grid2
+        int ans = 0;
+        for(int i=0;i <n ; i++){
+            for(int j =0 ; j< m ; j++){
+                int cnt = 1;
+                if(grid2[i][j] == 1 and !vis[i][j]){
+                    
+                    DFS(grid1 , grid2 , vis , i , j , cnt);
+                    ans += cnt;// agr cnt 0 hua , mtlb koi aisa cell aa gya hai jisme
+                    // grid1[i][j]= 0 and grid2[i][j]=1 
+                    // mtlb  ab ye island(in grid2) will never form sub-island of grid1
+                    
+                }
+                
+            }
+        }
+        return ans;
+        
+        
+    }
+};
+
+-----------------------------------------------------------------------------------------
+Time O(mn)
+Space O(mn)
+
