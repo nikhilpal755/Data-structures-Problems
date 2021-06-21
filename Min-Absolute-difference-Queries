@@ -1,0 +1,59 @@
+Refrence :- https://leetcode.com/problems/minimum-absolute-difference-queries/
+
+Vedio :-  https://youtu.be/veymW255mh8
+
+------------------ Beautiful Question for prefix Sum -----------------------
+
+
+
+class Solution {
+    int prefix[100001][101];
+public:
+    vector<int> minDifference(vector<int>& nums, vector<vector<int>>& queries) {
+        memset(prefix, 0 , sizeof(prefix));
+        
+        for(int i=0 ;i<nums.size() ;i++){
+            prefix[i][nums[i]]++;
+            if(i > 0){
+                 for(int j=1 ;j<101; j++){
+                  prefix[i][j] += prefix[i-1][j];
+              }
+                
+            }
+        }
+        vector<int> res;
+        
+      for(int i=0 ;i<queries.size() ; i++){
+          int l = queries[i][0];
+          int r = queries[i][1];
+          int ans = 102 , prev = -1;
+          for(int i=1 ;i<101 ; i++){
+             int x = prefix[r][i]; // we are taking this value into x because we do not want to change the 
+              // value in prefix -- we have process all queries
+              
+             if(l > 0) x -=  prefix[l-1][i]; // freq of all elements present inside the range
+             
+             if( x  > 0){// some element is present
+                 
+                     if(prev != -1){// taking this for calculating min absolute diff
+                         ans = min( ans , i - prev);
+                     }
+                     prev = i;
+                 
+             }
+            
+              
+          }
+        if(ans == 102)ans = -1;
+        res.push_back(ans);
+              
+          
+      }
+        
+        return res;
+        
+        
+        
+        
+    }
+};
