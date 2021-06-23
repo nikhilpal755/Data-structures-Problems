@@ -1,0 +1,126 @@
+// { Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+ // } Driver Code Ends
+
+
+ Explanation :- Basically , we are coloring our graph with alternating colors . if  we found any node such that we cannot color it with alternate colors
+ i.e, graph have odd length cycle , then it will not form a bipartite graph 
+
+
+-------------------------------------------- BFS ------------------------------------------------------
+
+class Solution {
+public:
+   bool bfs(vector<int> adj[] , vector<bool>& vis , int i , vector<int>&color ){
+       queue<int> q;
+       
+       q.push( i); // pushing the node
+       while(!q.empty()){
+           
+           int node = q.front();
+           q.pop();
+           
+           vis[node] = true;
+           
+           for(auto X : adj[node]){
+               if(!vis[X]){
+                   // agr node visit nhi kia hai to queue mein push and  isko color kr denge
+                   // opposite to parent color -- to make it bipartite
+                   color[X] = !color[node];
+                   q.push(X);
+               }else if(color[X] == color[node]){
+                   // node X and it's parent node have same color -- never be bipartite graph
+                   return false;
+               }
+           }
+           
+          
+       }
+       
+       return true;
+   }
+	bool isBipartite(int V, vector<int>adj[]){
+	 l
+	    vector<bool> vis(V, false);
+	    vector<int> color(V , -1);
+	
+	    for(int i=0 ;i<V ; i++){
+	   
+	        if(!vis[i]){
+	            color[i] = 0;// marking each component's starting node color to be 0 
+	            if(!bfs(adj , vis , i ,color ))return false;
+	            // agr iss component ko bipartite graph nhi bna skte to direct return false
+	        }
+	        
+	    }
+	    
+	    return true;
+	}
+
+};
+
+-----------------------------------------------------------------------------------------------------
+
+------------------------------------------- DFS ------------------------------------------------------
+class Solution {
+public:
+    
+    bool DFS( vector<int> adj[] , vector<bool>& vis , int node , vector<int>& color){
+        
+        vis[node] = true;
+     
+        for(auto X : adj[node]){
+            if(!vis[X]){
+                color[X] = !color[node];
+                if(! DFS(adj , vis , X , color ))return false;
+            }
+            else if(color[X] == color[node]){
+                    return false;
+            }
+        }
+        return true;
+
+        
+    }
+	bool isBipartite(int V, vector<int>adj[]){
+	 
+	    vector<bool> vis(V, false);
+	    vector<int> color(V , -1);
+	    color[0] = 0;
+	    for(int i=0 ;i<V ; i++){
+	        if(!vis[i]){
+	            color[i] = 0;
+	            if(!DFS(adj , vis , i ,color ))return false;
+	        }
+	        
+	    }
+	    
+	    return true;
+	}
+
+};
+
+-------------------------------------------------------------------------------------------------------
+
+// { Driver Code Starts.
+int main(){
+	int tc;
+	cin >> tc;
+	while(tc--){
+		int V, E;
+		cin >> V >> E;
+		vector<int>adj[V];
+		for(int i = 0; i < E; i++){
+			int u, v;
+			cin >> u >> v;
+			adj[u].push_back(v);
+			adj[v].push_back(u);
+		}
+		Solution obj;
+		bool ans = obj.isBipartite(V, adj);    
+		if(ans)cout << "1\n";
+		else cout << "0\n";  
+	}
+	return 0;
+}  // } Driver Code Ends
