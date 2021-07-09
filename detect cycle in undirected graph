@@ -1,0 +1,103 @@
+------------------------------ DFS ---------------------------------------
+
+
+class Solution 
+{
+    public:
+    //Function to detect cycle in an undirected graph.
+    bool findcycle(vector<int>adj[] , vector<bool>& vis , int node , int parent){
+        
+        vis[node]= true;
+
+     
+        for(auto X : adj[node]){
+            if(!vis[X]){
+            
+                if(findcycle(adj , vis , X , node))return true;
+            }else if(X != parent){
+                return true;
+            }
+        }
+        return false;
+        
+        
+    }
+	bool isCycle(int V, vector<int>adj[])
+	{
+	   // For every visited vertex v, when we have found any adjacent vertex u,
+	   // such that u is already visited,and u is not the parent of vertex v.
+	   // Then one cycle is detected
+	   
+	   vector<bool> vis(V + 1, false);
+	   //bool flag = false;
+	   int parent = -1;;
+	   for(int i=0 ; i<V ; i++){
+	       if(!vis[i]){
+	           if(findcycle(adj , vis , i , parent ))return true;
+	       }
+	   }
+	   return false;
+	   
+	    
+	}
+};
+
+
+---------------------------------------- BFS ------------------------------------------------
+
+class Solution 
+{
+    public:
+    //Function to detect cycle in an undirected graph.
+    bool findcycle(vector<int>adj[] , vector<bool>& vis , int i , int parent){
+      
+        
+        queue<pair<int,int>> q;
+        q.push({i , parent});
+        while(!q.empty()){
+            auto f = q.front();
+            
+            int node = f.first;
+            int par = f.second;
+            
+            
+            vis[node] = true;
+            
+            
+            for(auto X : adj[node]){
+                if(!vis[X])q.push({X , node}); // node X  with parent
+                else{
+                    if(X != par){
+                        return true;
+                    }
+                }
+            }
+            
+            q.pop();
+            
+            
+        }
+        
+        return false;
+        
+        
+        
+    }
+	bool isCycle(int V, vector<int>adj[])
+	{
+	   // For every visited vertex v, when we have found any adjacent vertex u,
+	   // such that u is already visited,and u is not the parent of vertex v.
+	   // Then one cycle is detected
+	   
+	   vector<bool> vis(V + 1, false);
+	   int parent = -1;
+	   for(int i=0 ; i<V ; i++){
+	       if(!vis[i]){
+	           if(findcycle(adj , vis , i , parent ))return true;
+	       }
+	   }
+	   return false;
+	   
+	    
+	}
+};
