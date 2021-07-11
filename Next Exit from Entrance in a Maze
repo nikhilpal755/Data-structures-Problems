@@ -1,0 +1,60 @@
+Reference :  https://leetcode.com/problems/nearest-exit-from-entrance-in-maze/
+
+
+Main approach is using BFS , but i implement it using DFS ( Not recommended in this problem)
+
+Why DFS is not working ?
+https://leetcode.com/problems/nearest-exit-from-entrance-in-maze/discuss/1329613/Issues-with-DFS-code-identified!!!-or-C%2B%2B-or-Working-%2B-Not-Working-Solution
+
+------------------------------------ DFS ------------------------------------------------------------
+class Solution {
+    int srow , scol;
+    int MAX= 1e5;
+    int dp[101][101]{};
+    int vis[101][101]{};
+    const int moves[4][2] = {{1,0},{-1,0},{0,1},{0,-1}};
+public:
+int DFS(vector<vector<char>>& maze, int row , int col){
+        if( row < 0 or col < 0 or col == maze[0].size() or row == maze.size() or maze[row][col] == '+' or vis[row][col] )return MAX;
+    
+        if( (row != srow  || col != scol) && ((row == 0 ) or ( col == 0) or ( row == maze.size() - 1) or ( col == maze[0].size() - 1))){
+            // current cell is not start and exit of matrix
+            
+            if(maze[row][col] == '.')return 0;
+            else return MAX;
+        }
+       if(dp[row][col]) return dp[row][col];
+        vis[row][col] = true;
+        
+       int ans = MAX;
+   
+    
+       for(int i=0 ;i<4 ; i++){
+            ans = min(ans, 1 + DFS(maze, row + moves[i][0], col + moves[i][1]));
+       }
+    
+        vis[row][col] = false;// mark unvisited to allow visiting this cell in different path
+    
+       dp[row][col] = ans;
+    
+      return ans;
+            
+
+        
+        
+        
+    }
+    int nearestExit(vector<vector<char>>& maze, vector<int>& entrance) {
+        
+        int row = entrance[0];
+        int col = entrance[1];
+      
+   
+        srow = row , scol = col;
+        int ans = DFS( maze ,row , col ) ;
+       return  (ans == MAX) ? -1 : ans;
+  
+        
+        
+    }
+};
