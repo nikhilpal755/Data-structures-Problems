@@ -1,0 +1,37 @@
+referece : https://leetcode.com/problems/unique-length-3-palindromic-subsequences/submissions/
+
+
+//----------------------------------------------------------------------------------
+class Solution {
+public:
+    int countPalindromicSubsequence(string s) {
+        // we will fix first and last occurence of a character and find the no of uniques characters between the range 
+        
+        vector<int> first(26 , -1) , last(26 , -1);
+        
+        for(int i=0 ;i<s.size() ;i++){
+            if(first[s[i] - 'a'] == -1)first[s[i] - 'a'] = i;
+            
+            last[s[i] - 'a'] = i;
+        }
+        int ans = 0;
+        for(int i=0 ;i<26 ;i++){
+        
+          // What i did ?
+           // int diff =  (last[i] - first[i]);
+           // if(diff <= 0)continue;
+           // unordered_set<char> sett;
+           // for(int j=first[i]+1 ; j < last[i] ; j++){
+           //     sett.insert(s[j]);
+           // }
+           // ans += sett.size();
+           
+          // little fast
+            if (first[i] < last[i])
+            ans += unordered_set<char>(begin(s) + first[i] + 1, begin(s) + last[i]).size();
+        }
+        return ans;
+        
+        
+    }
+};
