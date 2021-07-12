@@ -1,0 +1,61 @@
+REFRENCE : https://leetcode.com/problems/map-of-highest-peak/
+
+
+Approach: 
+->Because any two adjacent cells must have an absolute height difference of at most 1, we can apply level order traversal (BFS).
+->We will first push indices of water cells in the queue.
+->Then, while queue is not empty we will pop out cell one by one and push all neighbour cells which are not visited in the queue.
+->We will simply store level information of each cell in hieghts vector.
+
+------------------------------- BFS ------------------------------------------
+
+class Solution {
+ int dir[5] = {0, 1, 0, -1, 0};
+public:
+    vector<vector<int>> highestPeak(vector<vector<int>>& isWater) {
+        int n = isWater.size();
+        int m = isWater[0].size();
+        vector<vector<int>> hieghts(n , vector<int>(m , -1));
+        
+        queue<pair<int,int>> q;
+        for(int i=0 ;i<n ;i++){
+            for(int j = 0; j<m ;j++){
+                if(isWater[i][j] == 1){
+                    hieghts[i][j] = 0;
+                    q.push({i, j});
+                }
+            }
+        }
+        
+        int val = 1 ;
+        while(!q.empty()){
+            int sz = q.size();
+            for(int i=0 ;i<sz ;i++){
+                auto cell = q.front();
+                q.pop();
+                // we have to increment the adjacent cell value -- all four directions
+                for(int j=0 ;j<4 ;j++){
+                    int x = cell.first +  dir[j];
+                    int y = cell.second + dir[j + 1];
+                    
+                    if(x >= 0 and y >=0 and x < n and y < m and hieghts[x][y] == -1){
+                        hieghts[x][y] = val;// assigning the level with same val
+                        q.push({x , y});
+                    }
+                }
+                
+                
+            }
+            val++;// levelwise incrementing
+                 
+        }
+        
+        return hieghts;
+        
+        
+        
+        
+        
+    }
+};
+
