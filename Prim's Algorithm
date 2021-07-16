@@ -1,0 +1,113 @@
+ Refrence : https://practice.geeksforgeeks.org/problems/minimum-spanning-tree/
+ 
+ 
+// { Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+
+ // } Driver Code Ends
+
+ 
+ --------------------------------------------------------------------------------------
+
+class Solution
+{
+	public:
+	//Function to find sum of weights of edges of the Minimum Spanning Tree.
+    int spanningTree(int V, vector<vector<int>> adj[])
+    {
+         vector<int> min_wt(V + 1 ,  INT_MAX);
+         min_wt[0] = 0;
+         
+         vector<bool> mst(V + 1 , false); // minimum spanning tree
+         vector<int> par( V + 1 , -1); // parent
+         par[0] = -1;// source node has no parent
+         
+         priority_queue<pair<int,int> , vector<pair<int,int>> , greater<pair<int,int>>> pq;
+         
+         pq.push({0 , 0});// weight , node
+         while(!pq.empty()){
+                 auto node = pq.top().second;// node
+                 pq.pop();
+                 
+                 mst[node] = true;
+                 for(auto X : adj[node]){
+                     if( mst[X[0]] == false and min_wt[X[0]] > X[1]){
+                         min_wt[X[0]] = X[1];
+                         par[X[0]] = node;
+                         pq.push({X[1] , X[0]});
+                     }
+                     
+                 }
+                 
+                 
+         }
+     
+         int sum = 0;
+            for(int i=1 ;i<V ;i++){
+                sum += min_wt[i];
+                
+            }
+             
+          return sum;
+             
+             
+    }
+         
+         
+        
+};
+
+Time Complexity Analysis
+ 
+
+If adjacency list is used to represent the graph, then using breadth first search, all the vertices can be traversed in O(V + E) time.
+We traverse all the vertices of graph using breadth first search and use a min heap for storing the vertices not yet included in the MST.
+To get the minimum weight edge, we use min heap as a priority queue.
+Min heap operations like extracting minimum element and decreasing key value takes O(logV) time.
+ 
+
+So, overall time complexity
+
+= O(E + V) x O(logV)
+
+= O((E + V)logV)
+
+= O(ElogV)
+
+Time : O((N + E)logN ) ~ O(ElogN)
+Space : O(N+ E) + O(N) + O(N) + O(N)   ( ==> adj list , min_wt[] , par[]  , mst[] )
+------------------------------------------------------------------------------
+
+// { Driver Code Starts.
+
+
+int main()
+{
+    int t;
+    cin >> t;
+    while (t--) {
+        int V, E;
+        cin >> V >> E;
+        vector<vector<int>> adj[V];
+        int i=0;
+        while (i++<E) {
+            int u, v, w;
+            cin >> u >> v >> w;
+            vector<int> t1,t2;
+            t1.push_back(v);
+            t1.push_back(w);
+            adj[u].push_back(t1);
+            t2.push_back(u);
+            t2.push_back(w);
+            adj[v].push_back(t2);
+        }
+        
+        Solution obj;
+    	cout << obj.spanningTree(V, adj) << "\n";
+    }
+
+    return 0;
+}
+
+  // } Driver Code Ends
