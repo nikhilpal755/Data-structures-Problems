@@ -1,0 +1,49 @@
+https://www.geeksforgeeks.org/fractional-knapsack-problem/
+
+
+
+
+struct Item{
+    int value;
+    int weight;
+};
+
+
+class Solution
+{
+    public:
+    //Function to get the maximum total value in the knapsack.
+    double fractionalKnapsack(int W, Item arr[], int n)
+    {
+        // sort by value/wt in decreasing order
+        sort(arr ,arr + n, [](struct Item a , struct Item b){
+            double x =  (double)a.value/(double)a.weight;
+            double y = (double)b.value/ (double)b.weight;
+            return x > y;
+        });
+        double profit = 0;
+        int carrywt = 0;
+        for(int i=0;i<n;i++){
+          int val = arr[i].value;
+          int wt = arr[i].weight;
+          
+          if(carrywt + wt <= W){
+              profit += (double)val;
+              carrywt  += wt;
+
+          }else{
+              int remain = W - carrywt;
+              profit += (double)((double)remain/(double)wt)*val;
+              break;
+          }
+        }
+        
+        return profit;
+        
+        
+        
+        
+        
+    }
+        
+};
