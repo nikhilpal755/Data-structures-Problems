@@ -1,0 +1,71 @@
+// Problem : https://www.geeksforgeeks.org/find-maximum-meetings-in-one-room/
+
+
+
+
+#include<bits/stdc++.h>
+using namespace std;
+#define  nik(i,k,n)    for (int i = k; i < (n); ++i)
+
+
+// MAXIMUM MEETINGS IN ONE ROOM
+
+struct  meeting
+{
+	int start;
+	int end;
+	int pos;
+};
+
+
+bool myComparator(struct meeting a , struct meeting b){
+	return a.end < b.end;
+}
+
+void solve()
+{
+	int n ;cin >> n;
+	vector<int> start(n), finish(n);
+
+	nik(i,0,n)cin >> start[i];
+	nik(i,0,n)cin >> finish[i];
+
+	struct meeting meet[n];
+
+	for(int i=0 ;i<n ;i++){
+		meet[i].start = start[i];
+		meet[i].end = finish[i];
+		meet[i].pos = i + 1;
+	}
+  
+	// sorting on the basis of finish time
+	sort(meet , meet + n, myComparator);
+
+	vector<int> res;
+	res.push_back(meet[0].pos);
+
+	int time_limit = meet[0].end;
+
+	for(int i=1 ;i<n ;i++){
+		if(meet[i].start >= time_limit){
+			res.push_back(meet[i].pos);
+
+			time_limit = meet[i].end;
+		}
+
+	}
+
+	for(int i=0 ;i<res.size() ;i++){
+		cout << res[i] << " "; 
+	}
+	cout << endl;
+  
+}
+int32_t main()
+{
+		solve();
+	return 0;
+}
+
+
+Time : O(NlogN)
