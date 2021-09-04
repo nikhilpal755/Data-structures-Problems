@@ -1,0 +1,76 @@
+// ---------------------------JOB SEQUENCING PROBLEM-----------------------------------
+// Refrence : https://www.geeksforgeeks.org/job-sequencing-problem/
+
+
+
+#include<bits/stdc++.h>
+using namespace std; 
+
+struct Job 
+{ 
+    int id;	 // Job Id 
+    int dead; // Deadline of job 
+    int profit; // Profit if job is over before or on deadline 
+}; 
+
+class Solution 
+{
+    public:
+
+    vector<int> JobScheduling(Job arr[], int n) 
+    { 
+        // sorting in desc order  acc to profit
+        sort(arr , arr + n , [](struct Job a , struct Job b){
+            return a.profit > b.profit;
+        });
+        
+        int j=0;
+        vector<bool> vis(n , false); // checking if job is occupied on particular spot or not
+        int no_of_jobs = 0, maxprofit = 0;
+        for(int i=0 ;i<n ;i++){
+            int deadline = arr[i].dead;
+            for(int k = deadline ; k> 0 ;k--){
+                if(!vis[k]){
+                    vis[k] = true;
+                    no_of_jobs++;
+                    maxprofit += arr[i].profit;
+                    break;
+                }
+            }
+        }
+        
+        return {no_of_jobs , maxprofit};
+        
+    } 
+};
+
+
+int main() 
+{ 
+    int t;
+    //testcases
+    cin >> t;
+    
+    while(t--){
+        int n;
+        
+        //size of array
+        cin >> n;
+        Job arr[n];
+        
+        //adding id, deadline, profit
+        for(int i = 0;i<n;i++){
+                int x, y, z;
+                cin >> x >> y >> z;
+                arr[i].id = x;
+                arr[i].dead = y;
+                arr[i].profit = z;
+        }
+        Solution ob;
+        //function call
+        vector<int> ans = ob.JobScheduling(arr, n);
+        cout<<ans[0]<<" "<<ans[1]<<endl;
+    }
+	return 0; 
+}
+
