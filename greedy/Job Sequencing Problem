@@ -2,10 +2,6 @@
 // Refrence : https://www.geeksforgeeks.org/job-sequencing-problem/
 
 
-
-#include<bits/stdc++.h>
-using namespace std; 
-
 struct Job 
 { 
     int id;	 // Job Id 
@@ -44,33 +40,4 @@ class Solution
     } 
 };
 
-
-int main() 
-{ 
-    int t;
-    //testcases
-    cin >> t;
-    
-    while(t--){
-        int n;
-        
-        //size of array
-        cin >> n;
-        Job arr[n];
-        
-        //adding id, deadline, profit
-        for(int i = 0;i<n;i++){
-                int x, y, z;
-                cin >> x >> y >> z;
-                arr[i].id = x;
-                arr[i].dead = y;
-                arr[i].profit = z;
-        }
-        Solution ob;
-        //function call
-        vector<int> ans = ob.JobScheduling(arr, n);
-        cout<<ans[0]<<" "<<ans[1]<<endl;
-    }
-	return 0; 
-}
 
