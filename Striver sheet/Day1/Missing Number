@@ -1,0 +1,15 @@
+
+Refrence : https://leetcode.com/problems/missing-number/
+
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        
+        // Xor of [0,n] with [all elements in nums] will give us missing number
+        int x = 0;
+        for(int i=0 ;i<nums.size() ;i++ ){
+            x = x ^ nums[i] ^ (i + 1);
+        }
+        return x;
+    }
+};
