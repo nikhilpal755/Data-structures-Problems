@@ -1,0 +1,23 @@
+Refrence : https://leetcode.com/problems/sort-colors/submissions/
+
+
+class Solution {
+public:
+    void sortColors(vector<int>& nums) {
+        // sweeping 0 to left and 2 to right , then 1 will automatically  be sorted
+    	int n = nums.size();
+        int low = 0;
+        int high = n - 1;
+        int i =0 ;
+        while(i <= high){
+            if(nums[i] == 0){
+                swap(nums[i++] , nums[low++]);
+            }else if(nums[i] == 2){
+                swap(nums[i] , nums[high--]);
+            }else{
+                i++;
+            }
+        }
+        
+    }
+};
