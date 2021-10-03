@@ -34,28 +34,40 @@ public:
 
 // T :  O(N*M)  , S: O(1)
 
-class Solution {
+Approach
+
+> First check if there is any 0 in the first row or column and set the respective flag(row, col) to 1.
+> Now, iterate from row 2 and column 2 and check if there is any zero present; fill the first row index ar[0][j] = 0 and first column index ar[i][0] = 0.
+> Our first row and first column determine which rows and columns should be fully set to 0.
+> Now, check if flag row == 1, means our first row itself should be made 0.
+> Finally, check if flag col == 1, means our first column itself should be made 0.
+
+ class Solution {
 public:
     void setZeroes(vector<vector<int>>& matrix) {
         int n = matrix.size();
         int m = matrix[0].size();
+        int row = false, col = false;
         
-        // common part of both first row and first col is first cell
-        // we have to consider first cell only once - either in first row or first col
-        // we consider this in first row here 
+        // first row
+        for(int i=0 ;i<m ;i++){
+          if( matrix[0][i] == 0)row = true;  
+        }
+        // first col
+        for(int i=0 ;i<n ;i++){
+          if( matrix[i][0] == 0)col = true;  
+        }
         
-        int check = false;// first col
-        
-        for(int i=0 ;i<n; i++){
-            if(matrix[i][0] == 0)check = true;// taking first col
-            for(int j= 1;j<m; j++){// not taking first col
+        // rest
+        for(int i=1 ;i<n; i++){
+            for(int j= 1;j<m; j++){
                 if(matrix[i][j] == 0 ){
                     matrix[0][j] = 0;
                     matrix[i][0] = 0;
                 }
             }
         }
-        // rest
+        // starting from back ( we could start from i=1, j=1 as well)
         for(int i=n-1 ;i>=1; i--){
             for(int j=m-1 ;j>=1 ;j--){
                 if(matrix[i][j]  and (matrix[i][0] == 0 or matrix[0][j] == 0)){
@@ -64,14 +76,14 @@ public:
             }
         }
         // first row
-        if(matrix[0][0] == 0){
+        if(row){
             for(int i=0 ;i<m; i++){
                 matrix[0][i] = 0;  
             }
         }
         
         // first col
-        if(check){
+        if(col){
             for(int j=0;j < n;j++){
                 matrix[j][0] = 0;
             }
