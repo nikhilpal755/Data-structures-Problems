@@ -1,0 +1,85 @@
+Refrence : https://leetcode.com/problems/set-matrix-zeroes/submissions/
+
+
+// T : O(N*M) , S : O(N) + O(M)
+
+
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+        int n = matrix.size();
+        int m = matrix[0].size();
+        vector<int> rows(n, -1), cols(m, -1);
+        
+        for(int i=0 ;i<n; i++){
+            for(int j= 0; j< m; j++){
+                if(matrix[i][j] == 0){
+                    rows[i] = 0;
+                    cols[j] = 0;
+                }
+            }
+        }
+        
+        for(int i=0 ;i<n; i++){
+            for(int j=0 ;j<m ;j++){
+                if(rows[i] == 0 or cols[j] == 0)matrix[i][j] = 0;
+            }
+        }
+        
+        
+    }
+};
+
+
+
+// T :  O(N*M)  , S: O(1)
+
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+        int n = matrix.size();
+        int m = matrix[0].size();
+        
+        // common part of both first row and first col is first cell
+        // we have to consider first cell only once - either in first row or first col
+        // we consider this in first row here 
+        
+        int check = false;// first col
+        
+        for(int i=0 ;i<n; i++){
+            if(matrix[i][0] == 0)check = true;// taking first col
+            for(int j= 1;j<m; j++){// not taking first col
+                if(matrix[i][j] == 0 ){
+                    matrix[0][j] = 0;
+                    matrix[i][0] = 0;
+                }
+            }
+        }
+        // rest
+        for(int i=n-1 ;i>=1; i--){
+            for(int j=m-1 ;j>=1 ;j--){
+                if(matrix[i][j]  and (matrix[i][0] == 0 or matrix[0][j] == 0)){
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+        // first row
+        if(matrix[0][0] == 0){
+            for(int i=0 ;i<m; i++){
+                matrix[0][i] = 0;  
+            }
+        }
+        
+        // first col
+        if(check){
+            for(int j=0;j < n;j++){
+                matrix[j][0] = 0;
+            }
+            
+        }
+        
+        
+        
+        
+    }
+};
