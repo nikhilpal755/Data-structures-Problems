@@ -1,0 +1,69 @@
+ Refrence : https://leetcode.com/problems/rotate-image/
+ 
+ 
+ 
+    Approach :-
+ 
+        // clockwise => reverse whole matrix , then swap symmetry(along diagonal)
+        //              or 
+        //              swap symmetry , then reverse each row in matrix
+        // anticlockwise => swap symmetry , then reverse whole matrix
+        //                 or 
+        //                 reverse each row in matrix , then swap symmetry
+        
+        
+        // Also look for the animation by leetcode
+        
+    Method 1 : 
+      class Solution {
+          public:
+              void rotate(vector<vector<int>>& matrix) {
+
+                  int n = matrix.size();
+             
+                  reverse(matrix.begin()  ,matrix.end());
+
+                  // swap
+
+                  for(int i=0 ;i< n ;i++){
+                      for(int j=0; j<i ;j++){
+                          swap(matrix[i][j] , matrix[j][i]);
+                      }
+                  }
+
+
+
+
+              }
+          };
+          
+          
+    Method 2 : 
+    
+       class Solution {
+          public:
+              void rotate(vector<vector<int>>& matrix) {
+
+                  int n = matrix.size();
+
+
+                  // swap along diagonal
+
+                  for(int i=0 ;i< n ;i++){
+                      for(int j=0; j<i ;j++){
+                          swap(matrix[i][j] , matrix[j][i]);
+                      }
+                  }
+
+                  for(int i=0 ; i<n;i++){
+                      reverse(matrix[i].begin() , matrix[i].end());
+                  }
+
+
+
+
+              }
+          };
+        
+        
+        
