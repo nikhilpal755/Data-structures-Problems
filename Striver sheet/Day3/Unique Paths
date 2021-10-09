@@ -1,0 +1,21 @@
+https://leetcode.com/problems/unique-paths/
+
+
+--------------- DP ----------------------
+For less space complexity(read this) : https://leetcode.com/problems/unique-paths/discuss/22954/C%2B%2B-DP
+
+---> T : O(M*N) , S: O(M*N) 
+class Solution {
+public:
+    
+    int uniquePaths(int m, int n) {
+        vector<vector<int>> grid(m , vector<int>(n , 1));
+        
+        for(int i=1; i<m ;i++){
+            for(int j=1; j< n ;j++){
+                grid[i][j] = grid[i-1][j] + grid[i][j-1];
+            }
+        }
+        return grid[m-1][n-1];
+    }
+};
