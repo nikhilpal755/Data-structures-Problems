@@ -1,0 +1,18 @@
+https://leetcode.com/problems/powx-n/
+
+
+class Solution {
+public:
+    double myPow(double x, int n) {
+        // Binary expo
+        if(n == 0)return 1;
+        
+       double res = myPow(x , n/2);
+        if( n % 2 ){
+             if(n>0)return x * res * res;
+             else  return  (1/x) * res * res;
+        }
+        return res* res;
+        
+    }
+};
