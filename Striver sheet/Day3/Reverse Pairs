@@ -1,0 +1,47 @@
+Refrence : https://leetcode.com/problems/reverse-pairs/
+
+// All Approaches : https://leetcode.com/problems/reverse-pairs/discuss/97268/General-principles-behind-problems-similar-to-%22Reverse-Pairs%22
+
+// ----------------------- Similar to inversion count --------------(MERGE SORT METHOD)-------------
+class Solution {
+public:
+    
+    int merge(vector<int>&nums, int low , int mid , int high){
+        
+        int i=low, k=low;
+        int j=mid + 1;
+        int inv_cnt = 0;
+        while(i <= mid and j <= high){
+            if((long long)nums[i] >(long long int) 2*nums[j]){
+                inv_cnt  += mid - i + 1;
+                j++;
+            }
+            else{
+               i++;
+            }
+        }
+        sort(nums.begin() + low, nums.begin() + high + 1);
+        return inv_cnt;
+    }
+    
+    int mergeSort(vector<int>&nums  , int low , int high){
+        if(low >= high)return 0;
+        
+        int mid = low + ((high - low)>>1);
+        
+        int leftsubarray_inv_cnt = mergeSort(nums, low , mid);
+        int rightsubarray_inv_cnt = mergeSort(nums , mid + 1 , high);
+        
+        int merge_inv_cnt = merge(nums, low , mid , high);
+        return merge_inv_cnt + leftsubarray_inv_cnt + rightsubarray_inv_cnt;
+    }
+    int reversePairs(vector<int>& nums) {
+        //merge sort without aux space
+        int low = 0;
+        int high = nums.size() -1;
+        
+    
+        return mergeSort(nums , low , high);
+        
+    }
+};
