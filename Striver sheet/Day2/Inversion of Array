@@ -1,0 +1,54 @@
+Refrence : https://practice.geeksforgeeks.org/problems/inversion-of-array-1587115620/1#
+
+Sol : https://www.techiedelight.com/inversion-count-array/
+
+
+
+long long int merge(long long arr[], long long newarr[], long long int low , long long int mid , long long int high){
+	
+		
+		long long int  i=low , k = low;
+		long long int j=mid + 1;
+		long long int inv_cnt = 0;
+		while(i <= mid && j <= high){
+			if(arr[i] > arr[j]){
+			    newarr[k++] = arr[j++];
+				inv_cnt+=mid - i + 1;
+			}else{
+				newarr[k++] = arr[i++];
+			}
+		}
+		// remaining
+		while(i <= mid){
+		    newarr[k++] = arr[i++];
+		}
+		while(j <= high){
+		    newarr[k++] = arr[j++];
+		}
+		
+		for(int i=low; i<= high; i++){
+		    arr[i] = newarr[i];
+		}
+		return inv_cnt;
+		
+		
+}
+long long int mergeSort(long long arr[],long long newarr[], long long int low , long long int high){
+		if(low >= high)return 0;
+		
+		long long int mid = low + ((high - low)>>1);
+		long long int lh_inv_cnt = mergeSort(arr , newarr, low , mid);
+		long long int rh_inv_cnt = mergeSort(arr , newarr,mid + 1, high);
+		
+		long long int merge_inv_cnt = merge(arr,newarr, low , mid , high);
+		return merge_inv_cnt + lh_inv_cnt + rh_inv_cnt;
+}
+long long int inversionCount(long long arr[], long long N)
+{
+    	// merge sort
+		long long l = 0;
+		long long  r = N - 1;
+		long long  newarr[N];
+		return mergeSort(arr,newarr , l , r);
+    
+}
