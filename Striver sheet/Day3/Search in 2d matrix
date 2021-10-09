@@ -1,0 +1,40 @@
+https://leetcode.com/problems/search-a-2d-matrix/
+
+
+------------ O(M+N)------(Better not best)-------------
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        //O(M+N)
+        int n = matrix.size();
+        int m = matrix[0].size();
+        int j = m - 1;
+        for(int i=0 ;i<n ;i++){
+            if(matrix[i][j] == target)return true;
+
+            else if(matrix[i][j] > target) {
+                j--;
+                while(j >= 0){
+                    if(matrix[i][j] == target)return true;
+                    j--;
+                }
+                return false;
+            }
+            
+        }
+        return false;      
+    }
+};
+
+
+------------- Binary Search -------(best)--------------
+
+O(logN + logM)
+
+Approach : approach is similar as that of O(M+N) solution (cutting down rows and cols in each iteration) , instead we use BS to search the element
+
+Solution : https://leetcode.com/problems/search-a-2d-matrix/discuss/897152/C%2B%2B-Binary-Search-Solution-100-Time-~40-Space
+
+
+
+
