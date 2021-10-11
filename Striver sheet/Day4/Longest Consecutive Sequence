@@ -1,0 +1,25 @@
+Refrence : https://leetcode.com/problems/longest-consecutive-sequence/
+
+
+Good edutorial : https://leetcode.com/problems/longest-consecutive-sequence/discuss/1254638/Short-and-Easy-Solution-w-Explanation-or-O(N)-Solution-with-comments-using-hashset
+
+
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        
+        // hashing 
+        unordered_set<int> s(nums.begin(), nums.end());
+        int longestSeq = 0;
+        for(auto X :s){
+            if(!s.count(X-1)){// first element of candidate sequence
+                int j = 1;
+                while(s.count(X + j)){
+                    j++;
+                }
+                longestSeq = max(longestSeq, j);
+            }
+        }
+        return longestSeq;
+    }
+};
