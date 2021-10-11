@@ -1,0 +1,33 @@
+Refrence : https://www.geeksforgeeks.org/find-the-largest-subarray-with-0-sum/
+
+
+//-----------------------Running sum method----------------------------
+
+> We'll find the running sum in an array and map that value with index in unordered_map
+> If at any index , we found the running sum is already mapped with some other index before
+  This implies, there is subarray in b/w current_index and mapped_index  whose overall sum = 0
+  We'll update our ans with ans = max(ans , current_index - mapped_index); // currrent_index - mapped_index  = subarray len whose sum = 0
+  
+  
+  
+class Solution{
+    public:
+    int maxLen(vector<int>&A, int n)
+    {   
+        // Your code here
+        unordered_map<int,int> m;
+        int ans = 0;
+        int sum = 0;
+        for(int i=0 ;i< n; i++){
+            sum += A[i];
+         
+            if(sum == 0)ans = i + 1;  // one edge case  : when running sum = 0 
+            if(m.find(sum) != m.end()){
+                ans = max(ans , i - m[sum] );
+                continue;
+            }
+            m[sum] = i ;
+        }
+        return ans;
+    }
+};
