@@ -1,0 +1,33 @@
+
+
+https://leetcode.com/problems/longest-substring-without-repeating-characters/
+
+
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        // sliding window
+        unordered_map<char,int> m;
+
+        int ans = 0 , j = 0;// j = jumper (starting pointer of current window)
+        // window  will contain all unique elements
+        
+        for(int i=0 ;i<s.size() ;i++){
+            if(m.find(s[i]) != m.end()){// duplicate case
+            
+               j = max( m[s[i]] + 1 , j);
+                // moving jumper to the one next index of the prev occ of current element (shrinking the window size)
+                // we need max for the cases like these 
+                // if s = 'abba'
+                //  when i reach last 'a' , then j = 2(starting of window) , but now we are saying j= m['a'] + 1 = 0 + 1 = 1 , which is not valid
+                // because we already wiped out values before starting pointer of window(j = 2)
+                
+            }
+            m[s[i]] = i;
+            ans = max(ans , i - j + 1); // current window length = i - j + 1
+           
+        }
+        return ans;
+    }
+};
