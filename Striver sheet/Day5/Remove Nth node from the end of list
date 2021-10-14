@@ -1,0 +1,97 @@
+Refrence : https://leetcode.com/problems/remove-nth-node-from-end-of-list/
+
+Solution : https://leetcode.com/problems/remove-nth-node-from-end-of-list/discuss/1164537/Short-and-Simple-One-Pass-Solution-w-Explanation-or-Beats-100-or-No-dummy-node-required!
+--------My methods-----------
+1)  just caluclate the length of list first and find length - n + 1 element from front and delete it
+2)  Reverse List then delete Nth node and then again reverse it
+3)  Fast and Slow Pointer ( I didn't understand it)
+
+-- 1) ----------------------------
+class Solution { 
+public:
+  
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        if(!head )return head;
+        if(!head-> next and n == 1)return NULL;
+        ListNode* curr = head;
+        int cnt = 0;
+        while(curr != NULL){
+            curr = curr -> next;
+            cnt++;
+        }
+ 
+        int x = cnt - n + 1;
+        cnt = 0;
+        curr = head;
+        ListNode* prev = head;
+        while(cnt != x -1){
+            cnt++;
+            prev = curr;
+            curr = prev->next;
+        }
+        if(cnt == 0){
+            return head->next;
+            
+        }
+        // cout << prev -> val << " " << curr ->val << " ";
+
+        if(curr-> next){
+            prev->next = curr -> next;
+        }else{
+            prev->next = NULL; 
+        }
+        return head;
+        
+    }
+};
+
+
+--2)--------------------------------
+class Solution {
+public:
+    ListNode* ReverseList(ListNode*&head){
+        ListNode* prev = NULL;
+        ListNode* curr = head;
+        ListNode* ahead = head;
+        while(curr != NULL){
+            ahead = curr -> next;
+            curr-> next = prev ;
+            prev = curr;
+            curr = ahead;
+        }
+        return prev;
+    }
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+
+        
+        //reverse , remove nth node , reverse
+        if(!head)return head;
+        if(!head->next and n==1)return NULL;
+        
+        ListNode* reverse = ReverseList(head);
+
+        int cnt = 0;
+        ListNode* curr = reverse;
+        ListNode* prev = NULL;
+        while(cnt != n - 1 ){
+            cnt++;
+            prev = curr;
+            curr = prev-> next;
+            
+        }
+        if(cnt == 0){// special case ( when we have to remove the 1st element from end or last element from front)
+            return ReverseList(reverse->next);
+        }
+        if(curr -> next){
+            prev->next = curr -> next;
+        }else{
+            prev->next = NULL;
+        }
+        ListNode* reverseAgain = ReverseList(reverse);
+        return reverseAgain;
+       
+    }
+};
+
+
+
