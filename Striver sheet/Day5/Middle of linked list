@@ -1,0 +1,4 @@
+https://leetcode.com/problems/middle-of-the-linked-list/
+
+
+just use fast and slow pointer to iterate and return slow after completion
