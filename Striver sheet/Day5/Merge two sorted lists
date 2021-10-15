@@ -1,6 +1,7 @@
 https://leetcode.com/problems/merge-two-sorted-lists/
 
 
+-------------------------- Recursive ----------------------------------
 class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
@@ -27,5 +28,56 @@ public:
          }
 
      
+    }
+};
+
+---------------------------- Iterative --------------------------------------
+Edutorial :  https://leetcode.com/problems/merge-two-sorted-lists/discuss/10065/Clean-simple-O(n%2Bm)-C%2B%2B-Solution-without-dummy-head-and-recurtion
+
+
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+        
+        if(!l1 and !l2)return NULL;
+        if(!l1)return l2;
+        if(!l2)return l1;
+         
+         int x = l1->val;
+         int y = l2->val;
+         ListNode* head = NULL;
+         ListNode* newListhead = NULL;
+        
+         if( x <= y){
+              head = l1;
+              newListhead = l1;
+             l1 = l1 ->next;
+         }
+         else {
+              head = l2; 
+              newListhead = l2;
+             l2 = l2 -> next;
+         }
+        
+         while(l1 != NULL and l2 != NULL){
+             if(l1->val <= l2->val){
+                 head-> next = l1;
+                 l1= l1-> next;
+             }else{
+                 head -> next = l2;
+                 l2 = l2 ->next;
+             }
+             head = head -> next;
+         }
+         
+         if(l2){
+             head ->next = l2;
+         }
+         if(l1){
+             head -> next= l1;
+         }
+         return newListhead;
+         
+        
     }
 };
