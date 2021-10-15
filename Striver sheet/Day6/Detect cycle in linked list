@@ -1,0 +1,22 @@
+https://leetcode.com/problems/linked-list-cycle/
+
+------------------- Fast ans Slow pointer method ------------------------
+// if there is a cycle fast and slow pointer will definetly meet at the some node in a cycle ( this might not be the starting point of the cycle ) 
+
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        ListNode* sp = head;
+        ListNode* fp = head;
+        
+        while(fp and sp and fp -> next){
+            fp = fp -> next -> next;
+            sp = sp ->next ;
+            if(fp == sp){
+                return true;
+            }
+        }
+        return false;
+        
+    }
+};
