@@ -1,0 +1,30 @@
+https://leetcode.com/problems/intersection-of-two-linked-lists/
+
+Various Solutions : https://leetcode.com/problems/intersection-of-two-linked-lists/discuss/1093014/C%2B%2B-Four-different-solutions
+--------------------------------------------------------------
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        
+        ListNode* cur1 = headA;
+        ListNode* cur2 = headB;
+        // jaise hi cur1 null hota hai hm cur1 = headB kr denge , aur jaise hi cur2 null hota hai hm cur2= headA kr denge
+        // both cur1 and cur2 will travel same distance to reach intersection point if we follow above rule..think aoout it with some testcases you will understand
+        while(cur1 != cur2){
+            if(!cur1)cur1 = headB;
+            else cur1 = cur1 -> next;
+            
+            if(!cur2)cur2 = headA;
+            else cur2 = cur2 -> next;    
+            
+            if(cur1 == cur2)return cur1; 
+            // if they both intersect at the same time then just return intersection point or reach end at the same time then 
+            there is no intersection point we could return list1 or list2
+            
+        }
+        
+        return A;
+        
+        
+    }
+};
