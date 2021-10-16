@@ -1,0 +1,25 @@
+https://leetcode.com/problems/add-two-numbers/
+
+
+
+class Solution {
+public:
+    ListNode* helper(ListNode* head1 , ListNode* head2 , ListNode* head ,rem ){
+        if(!head1 and !head2)return NULL;
+        if(!head1)return head2;
+        if(!head2)return head1;
+        
+        int sum = head1 -> val + head2 -> val + rem;
+        head-> next = new ListNode(sum % 10);
+
+        rem = sum/10;
+        
+        helper(head1 -> next, head2 -> next,head -> next , rem);
+        
+    }
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+       if(!l1 and !l2) return NULL;
+       ListNode* head = new ListNode(0);
+       return helper(l1 , l2 , head , 0);  
+    }
+};
