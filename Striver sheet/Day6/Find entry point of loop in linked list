@@ -1,0 +1,36 @@
+https://leetcode.com/problems/linked-list-cycle-ii/
+
+
+-- First we detect the loop , if loop exits then move forward otherwise return NULL
+-- Now after detecting loop, We have meeting point(where both sp and fp collides) , starting point (where both sp and fp starts their journey) and entry point ( where both
+   enters the loop) 
+   we need to find entry point
+   
+   Property : distance between starting point and entry point = distance between meeting point and entry point
+   
+   
+   
+   ---------------------------------------------------------------
+   class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        
+        ListNode* fp = head;
+        ListNode* sp = head;
+        bool cycle = false;
+        while(fp and fp -> next){
+            sp = sp -> next;
+            fp = fp -> next -> next;
+            if(fp == sp){
+               sp = head;
+               while(sp != fp){
+                   sp = sp -> next;
+                   fp = fp -> next;
+               }
+               return fp; 
+            }
+        }
+        return NULL;
+        
+    }
+};
