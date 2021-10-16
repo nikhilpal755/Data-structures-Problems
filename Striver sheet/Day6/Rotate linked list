@@ -1,0 +1,35 @@
+https://leetcode.com/problems/rotate-list/description/
+
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        if(!head or !head->next)return head;
+        auto len = head;
+        int cnt = 0;
+        while(len){
+            len = len-> next;
+            cnt++;
+        }
+        k = k % cnt;
+        
+        
+        while(k--){
+            // each rotation 
+            auto cur = head;
+            while(cur -> next -> next){
+                cur = cur -> next;
+            }
+            cur -> next -> next = head;
+            head = cur -> next;
+            cur -> next = NULL;
+        }
+        
+        return head;
+        
+        
+    }
+};
+N = length of linked list
+K = no of rotations
+
+Time : O(K*N) ~ O(N^2)  because ,we are doing K= K % N => K = [0,n-1] 
