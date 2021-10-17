@@ -1,10 +1,17 @@
 Refrence : https://leetcode.com/problems/remove-nth-node-from-end-of-list/
 
 Solution : https://leetcode.com/problems/remove-nth-node-from-end-of-list/discuss/1164537/Short-and-Simple-One-Pass-Solution-w-Explanation-or-Beats-100-or-No-dummy-node-required!
---------My methods-----------
+-------- methods-----------
 1)  just caluclate the length of list first and find length - n + 1 element from front and delete it
 2)  Reverse List then delete Nth node and then again reverse it
-3)  Fast and Slow Pointer ( I didn't understand it)
+3)  we can use two pointers here...
+    > initilize *fp and *sp with head of linked list
+    > move fp n nodes furthur (fp = fp -> next )
+    > now start sp until fp -> next becomes null ( in total we are moving sp to (length of list - n) times)
+    > now sp -> next is pointing to the node which we want to delete ( nth node from back)
+    > delete it
+   
+   Main idea : maintain  n nodes distance between fp and sp and when fp reaches end of list , our sp will reach nth node from back.
 
 -- 1) ----------------------------
 class Solution { 
@@ -33,7 +40,7 @@ public:
             return head->next;
             
         }
-        // cout << prev -> val << " " << curr ->val << " ";
+    
 
         if(curr-> next){
             prev->next = curr -> next;
@@ -93,5 +100,34 @@ public:
     }
 };
 
-
+-----3)-----------------------------------------------------------
+class Solution { 
+public:
+  
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        if(!head )return head; 
+        auto fp = head;
+        auto sp = head;
+        
+        for(int i=0 ;i<n ;i++){
+            fp = fp -> next;
+        }
+        if(!fp){
+            auto p = head -> next;
+            delete(head);
+            return p;
+        }
+        while(fp -> next){
+            sp = sp -> next;
+            fp = fp -> next;
+        }
+        auto del = sp -> next;    
+        sp -> next = sp -> next -> next;
+        delete(del);
+        
+        return head;
+    
+        
+    }
+};
 
