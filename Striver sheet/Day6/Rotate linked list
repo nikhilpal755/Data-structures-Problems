@@ -1,5 +1,7 @@
 https://leetcode.com/problems/rotate-list/description/
 
+
+---------------------------- Brutforce -----------------------------------------
 class Solution {
 public:
     ListNode* rotateRight(ListNode* head, int k) {
@@ -33,3 +35,45 @@ N = length of linked list
 K = no of rotations
 
 Time : O(K*N) ~ O(N^2)  because ,we are doing K= K % N => K = [0,n-1] 
+
+
+----------------------------------- Optimised ------------------------------------
+
+//idea : making linked list circular
+> Return if list is empty or singleton or if k is 0.
+> Compute the size of the list.
+> Link the last node of the list with head. (A circular list is created)
+> If k is greater than size of the list, take modulus. k = k % size
+> Find the position (pi) from where to break the circle. size - k % size
+> Mark next element (pi+1) the new head.
+> Break the circle!
+
+
+
+class Solution {
+public:
+   
+    ListNode* rotateRight(ListNode* head, int k) {
+        if(!head or !head->next)return head;
+        
+        auto cur = head;
+        int cnt = 1;
+        // length of list
+        while(cur ->next){
+            cur = cur-> next;
+            cnt++;
+        }
+        cur -> next = head; // making list circular
+        k = k % cnt;
+        k = cnt - k;
+       
+        while(k--){
+            cur = cur -> next;
+        }
+        head = cur -> next;
+        cur -> next = NULL;
+        return head;
+
+    }
+};
+
