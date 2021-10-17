@@ -1,0 +1,49 @@
+Question : https://practice.geeksforgeeks.org/problems/flattening-a-linked-list/
+
+
+GFG : https://www.geeksforgeeks.org/flattening-a-linked-list/
+
+----------------------------------------------------
+
+
+Node* MergeTwoLists(Node* p , Node* q){
+   // Merge Process -- two pointers
+    if(!p)return q;
+    if(!q)return p;
+    
+    Node* mergeList; 
+    if(p -> data < q -> data){
+        mergeList = p;
+        mergeList -> bottom = MergeTwoLists(p -> bottom , q);
+    }else{
+        mergeList = q;
+        mergeList -> bottom = MergeTwoLists(p , q -> bottom);
+    }
+    mergeList -> next = NULL;
+    
+    return mergeList;
+    
+}
+Node *flatten(Node *root)
+{
+   //  -- we will use merge() process to merge two sub linked list
+   if(!root or !root-> next)return root;
+   
+   // low level thinking ==> Faith : assume hmare pass root->next se start hone wali saari sub-linked list ka flattened order(sorted order) aa jaye using recursion
+                             Expectation : hme saari sub-linked lists ka flattened order(sorted order) chahiye 
+                             Faith to Expectaion : current root aur faith se aayi flattend list  ko merge kr denge to saari sub-linked lists flattened order me aa jayengi
+    
+    // faith
+   root -> next = flatten(root -> next);
+   
+   // faith to expectation (merging)
+   auto flattenedroot = MergeTwoLists(root , root-> next );
+   
+   return flattenedroot;
+   
+   
+}
+
+
+
+
