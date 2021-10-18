@@ -1,0 +1,86 @@
+
+> divide linked list into 2 halves , reverse second half and compare it with first half 
+
+https://leetcode.com/problems/palindrome-linked-list/discuss/1137696/Short-and-Easy-w-Explanation-or-T-%3A-O(N)-S-%3A-O(1)-Solution-using-Fast-and-Slow
+
+
+Recursive---------------------------------------
+class Solution {
+public:
+    bool helper(ListNode*&left , ListNode*&right){
+        if(!right)return true;
+        bool x = helper(left, right ->next);
+        if(!x )return false;
+        if(left -> val != right -> val)return false;
+        left = left -> next;
+        return true;
+    }
+    bool isPalindrome(ListNode* head) {
+        ListNode* right = head;
+        ListNode* left = head;
+        return helper(left , right);
+    }
+};
+
+
+Iterative-------------------------------------------
+
+class Solution {
+public:
+    int cnt(ListNode* head)
+    {
+        ListNode* tmp=head;
+        int count=0;
+        while(tmp!=NULL)
+        {
+            count++;
+            tmp=tmp->next;
+        }
+        return count;
+    }
+    ListNode* reverse(ListNode* head)
+    {
+        ListNode* curr=head;
+        ListNode* ahead=head;
+        ListNode* prev=NULL;
+        while(curr != NULL)
+        {
+            ahead=curr->next;
+            curr->next=prev;
+            prev=curr;
+            curr=ahead;
+        }
+        return prev;
+
+    }
+    bool isPalindrome(ListNode* head) {
+         int n=cnt(head);
+         ListNode* sp=head;
+         ListNode* fp=head;
+         while(fp && fp->next!=NULL)
+         {
+            sp=sp->next;
+            fp=fp->next->next;
+         }
+         if(n%2==0)
+         {
+            sp=reverse(sp);
+            fp=head;
+         }
+         else
+         {
+            sp=reverse(sp->next);
+            fp=head;
+         }
+         while(sp)
+         {
+            if(fp->val != sp->val)
+                return false;
+            sp=sp->next;
+            fp=fp->next;
+
+         }
+         return true;
+        
+    }
+};
