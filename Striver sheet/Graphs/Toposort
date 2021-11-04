@@ -1,0 +1,88 @@
+
+// --------------------------DFS--------------------------- 
+class Solution
+{
+	public:
+	
+	void DFS(vector<int> adj[] , vector<bool>& vis , int node , stack<int>& s){
+	    
+	    vis[node] = true;
+	    
+	    for(auto X : adj[node]){
+	        if(!vis[X]){
+	            DFS(adj , vis , X , s);
+	        }
+	    }
+	    // after completing the dfs over all the adjacent nodes of current node 
+	    // i  will backtrack and push node into the stack
+	    s.push(node);
+	    
+	    
+	}
+	vector<int> topoSort(int V, vector<int> adj[]) 
+	{
+	    
+	    vector<bool> vis(V + 1 , false);
+	    stack<int> s;
+	    for(int i=0 ;i<V ; i++){
+	        if(!vis[i]){
+	            DFS(adj , vis , i , s);
+	        }
+	    }
+	    vector<int> topo;
+	    while(!s.empty()){
+	        topo.push_back(s.top());
+	        s.pop();
+	    }
+	    return topo;
+	}
+};
+
+
+//--------------------- BFS ( kahn's algo) --------------------------
+
+
+class Solution
+{
+	public:
+	
+	vector<int> topoSort(int V, vector<int> adj[]) 
+	{
+	 
+	   queue<int> q;
+	   vector<int> indegree(V , 0);
+	   
+	   // making indegree vector
+	   for(int i=0 ;i<V ;i++){
+	       for(auto X : adj[i]){
+	           indegree[X]++;
+	       }
+	   }
+	   
+	   // pushing elements having indegree= 0
+	   
+	   for(int i=0 ;i<indegree.size(); i++){
+	       if(indegree[i] == 0)q.push(i);
+	   }
+	  
+	   vector<int> topo;
+	   while(!q.empty()){
+	       int node = q.front();
+	       q.pop();
+	       topo.push_back(node);
+	       
+	       for(auto X : adj[node]){// going to adjacent nodes and decrementing their indegree by
+	        // one -- removing an edge 
+	           indegree[X]--;
+	           if(indegree[X] == 0)q.push(X);
+	       }
+	       
+	   }
+	   
+	   return topo;
+	   
+	   
+	   
+
+	}
+};
