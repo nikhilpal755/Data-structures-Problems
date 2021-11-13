@@ -1,0 +1,91 @@
+
+---------------------------------- Memoized(Top down) -----------------------------------------------------------
+class Solution {
+public:
+    int helper(vector<int>& coins , int curr, vector<int>& memo ){
+        
+
+        if(curr == 0)return 0;
+        
+        // amount reached before -> take value from cache
+        if(memo[curr] != INT_MAX)return memo[curr];
+        
+        int res = INT_MAX;
+        for(int i=0; i<coins.size() ;i++){
+           if(coins[i] <= curr){
+                int X = helper(coins, curr - coins[i], memo);
+                if(X>=0 && X < res)res = 1+X;
+               
+           }
+           
+         }
+         memo[curr] = (res==INT_MAX) ? -1 : res;
+         return memo[curr];
+        
+        
+    }
+    int coinChange(vector<int>& coins, int amount) {
+        
+        if(amount <= 0) return 0;
+        vector<int> memo(amount + 2 , INT_MAX);
+     
+        return helper(coins, amount, memo);
+    
+        
+    }
+    
+    ---------------------------------- Bottom Up ---------------------------
+  1)  ------------------------------------------------------
+  class Solution {
+  public:
+
+      int coinChange(vector<int>& coins, int amount) {
+
+         vector<int> dp(amount + 1, INT_MAX);
+          dp[0] = 0;// reach a amount of 0 with paying 0 coins
+
+          for(int i=1; i<=amount ; i++){
+          // using all coins to generate i amount
+              for(int j=0; j<coins.size() ;j++){
+                 if(i >= coins[j]){
+                    int X = dp[i- coins[j]];
+                    if(X != INT_MAX)dp[i] = min(dp[i] ,1+ dp[i - coins[j]]);
+                 }
+              }
+          }
+
+          return (dp[amount] == INT_MAX) ? -1 : dp[amount];
+
+
+      }
+  };
+};
+
+
+2)----------------------------------------------------------
+class Solution {
+public:
+   
+    int coinChange(vector<int>& coins, int amount) {
+        
+       vector<int> dp(amount + 1, INT_MAX);
+        dp[0] = 0;// reach a amount of 0 with paying 0 coins
+        
+        for(int i=0; i<coins.size() ; i++){
+            // iteration1 : using  coins[0] to make amount
+            // iteration2 : using  coins[0],coins[1] to make amount
+            //...
+            for(int j=1; j<=amount ;j++){
+               if(j >= coins[i]){
+                   int X = dp[j - coins[i]];
+                   if(X != INT_MAX)dp[j] = min(dp[j], dp[j - coins[i]] + 1);
+               }
+            }
+        }
+  
+        return (dp[amount] == INT_MAX) ? -1 : dp[amount];
+        
+        
+    }
+};
+
