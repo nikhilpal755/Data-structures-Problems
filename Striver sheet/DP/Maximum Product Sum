@@ -1,0 +1,23 @@
+https://leetcode.com/problems/maximum-product-subarray/submissions/
+
+https://leetcode.com/problems/maximum-product-subarray/discuss/203013/C%2B%2B-O(N)-time-O(1)-space-solution-with-explanation
+
+
+class Solution {
+public:
+    
+    int maxProduct(vector<int>& nums) {
+        
+        int mx_prod = nums[0], mn_prod = nums[0], res = nums[0];
+        for(int i=1;i<nums.size() ;i++){
+            
+            if(nums[i] < 0)swap(mn_prod, mx_prod);
+            
+            mn_prod = min(nums[i] , mn_prod*nums[i]);
+            mx_prod = max(nums[i], mx_prod*nums[i]);
+            res = max(mx_prod, res);
+         
+        }
+        return res;
+    }
+};
