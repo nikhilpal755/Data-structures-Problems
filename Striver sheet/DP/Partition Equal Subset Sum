@@ -1,0 +1,73 @@
+https://leetcode.com/problems/partition-equal-subset-sum/
+
+
+----- Similar to  Target sum subset (Varitation of 0/1 knapsack) -----
+> calculate sum
+> if sum % 2 == 1  --> partition is not possible => return false;
+> dp[i][j] --> using 0 to i elements , can we able to achieve the sum of j ?
+--------------------- 2D ------------------------
+class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+        int sum = 0;
+        for(int i=0 ;i<nums.size() ; i++){
+            sum += nums[i];
+        }
+        if(sum % 2)return false;
+        sum = sum / 2;
+        
+        vector<vector<bool>> dp(nums.size() + 1, vector<bool>(sum + 1,false));
+        
+        for(int i=0; i<=nums.size(); i++){
+            dp[i][0] = true;
+        }
+        
+        for(int i=1; i<= nums.size(); i++){
+            for(int j=1; j<= sum ;j++){
+                dp[i][j] = dp[i-1][j];
+                if(j >= nums[i-1]) dp[i][j] =(dp[i][j] || dp[i-1][j - nums[i-1]] );
+            }
+        }
+        
+        
+       return dp[nums.size()][sum];
+        
+        
+        
+    }
+};
+
+-------------------------- 1D -----------------------------------
+class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+        int sum = 0;
+        for(int i=0 ;i<nums.size() ; i++){
+            sum += nums[i];
+        }
+        if(sum % 2)return false;
+        sum = sum / 2;
+        
+        // vector<vector<bool>> dp(nums.size() + 1, vector<bool>(sum + 1,false));
+        vector<bool> dp(sum + 1, false);
+    
+        
+        dp[0] =true;
+        
+        for(int i=0; i< nums.size(); i++){
+            for(int j=sum; j > 0 ; j--){
+               if(j >= nums[i]){
+                   dp[j] = (dp[j] || dp[j - nums[i]]);
+               }
+                
+            }
+        }
+        
+        
+       return dp[sum];
+        
+        
+        
+    }
+};
+
