@@ -1,7 +1,9 @@
 https://leetcode.com/problems/partition-equal-subset-sum/
 
 Edutorial : https://leetcode.com/problems/partition-equal-subset-sum/discuss/90592/01-knapsack-detailed-explanation
-----------------watch for comment 4(for 1D)---------------------
+            (read comment 4 for 2D to 1D)
+
+All Approaches : https://leetcode.com/problems/partition-equal-subset-sum/discuss/462699/Whiteboard-Editorial.-All-Approaches-explained.
 
 
 ----- Similar to  Target sum subset (Varitation of 0/1 knapsack) -----
