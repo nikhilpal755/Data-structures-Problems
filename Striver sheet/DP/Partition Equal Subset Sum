@@ -1,10 +1,17 @@
 https://leetcode.com/problems/partition-equal-subset-sum/
 
+Edutorial : https://leetcode.com/problems/partition-equal-subset-sum/discuss/90592/01-knapsack-detailed-explanation
+----------------watch for comment 4(for 1D)---------------------
+
 
 ----- Similar to  Target sum subset (Varitation of 0/1 knapsack) -----
+
+
 > calculate sum
 > if sum % 2 == 1  --> partition is not possible => return false;
 > dp[i][j] --> using 0 to i elements , can we able to achieve the sum of j ?
+
+
 --------------------- 2D ------------------------
 class Solution {
 public:
@@ -47,8 +54,7 @@ public:
         }
         if(sum % 2)return false;
         sum = sum / 2;
-        
-        // vector<vector<bool>> dp(nums.size() + 1, vector<bool>(sum + 1,false));
+
         vector<bool> dp(sum + 1, false);
     
         
