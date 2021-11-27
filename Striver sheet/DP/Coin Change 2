@@ -1,0 +1,35 @@
+-------------- Coin Change 2 (Coin combinations)------------------
+
+Refrence : https://leetcode.com/problems/coin-change-2/
+
+
+
+class Solution {
+public:
+    int change(int amount, vector<int>& coins) {
+        
+        vector<int> dp(amount + 1, 0);
+        // dp[i] -> ith amount bnane ke liye kitne number of ways mein achieve kr skta hoon
+        
+        dp[0] = 1; // agr mujhe amount = 0 bnani hai to kitne number of ways mein main unko achieve
+        // krunga --> do nothing (1 way)
+        
+        
+        for(int i=0 ; i< coins.size(); i++){// iterating over coins
+            for(int j=1; j<=amount ;j++){// hr coin se dp[] array ko fill krenge 
+               if(j >= coins[i]) dp[j] += dp[j - coins[i]] ;
+                
+            }
+        }
+        return dp[amount];
+        
+        
+        
+    }
+};
+
+
+// for coin change permuations , just reverse the order of for loops 
+// for(i -> amount)
+//     for(j -> coins )
+
