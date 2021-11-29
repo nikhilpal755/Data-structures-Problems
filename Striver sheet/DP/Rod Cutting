@@ -1,0 +1,65 @@
+https://www.geeksforgeeks.org/cutting-a-rod-dp-13/
+
+
+Refer to DP book as well
+------------------------------ RECURSIVE ------------------------
+class Solution{
+  public:
+    
+    
+    int helper(int price[], int len , vector<int>& memo){
+        if(len == 0)return 0;
+     
+        
+        if(memo[len] != 0)return memo[len];
+        
+        int ans = INT_MIN;
+        for(int i=1; i<=len ;i++){
+            ans = max(ans, price[i-1] + helper(price, len - i, memo));
+            // price[i-1] -> price of ith part, helper(.., len - i ,...) will return maximum price for (len - i)th part
+        }
+        
+        memo[len] = ans;
+        return memo[len];
+        
+    }
+    int cutRod(int price[], int n) {
+        //code here
+        if(n <= 0)return 0;
+        vector<int> memo(n + 1, 0);
+        return helper(price, n , memo);
+        
+        
+    }
+};
+
+
+------------ Bottom UP----------------------
+
+
+
+class Solution{
+  public:
+    
+    int cutRod(int price[], int n) {
+       
+        if(n <= 0)return 0;
+       
+        vector<int> dp(n + 1, 0);
+        dp[0] = 0;
+        
+        // dp[i] -> ith part ko bnane ke liye kitna maximum profit generate kr skte hain (using integral parts of rod)
+        
+        for(int i=1; i<= n;i++){
+            int ans = INT_MIN;
+            for(int j=i;j>=1 ;j--){// considering all integral lengths
+                ans = max(ans, price[j-1] + dp[i - j]);
+            }
+            dp[i] = ans;
+        }
+        
+        return dp[n];
+        
+        
+    }
+};
