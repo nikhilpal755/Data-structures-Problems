@@ -1,0 +1,47 @@
+https://leetcode.com/problems/minimum-cost-for-tickets/
+
+
+class Solution {
+public:
+    int memo[366] ={-1}; // cache
+    
+    int helper( vector<int>&costs, unordered_set<int>&s, int i ){
+        
+        if(i > 365)return 0;
+        if(memo[i] != -1){
+            return memo[i];
+        }
+        int ans ;
+        if(s.count(i)){// Travel day
+            ans = min(helper(costs, s, i+1) + costs[0], helper(costs, s, i+7) + costs[1]);
+            ans = min(ans, helper(costs, s, i+30) + costs[2]); 
+        }else{
+            
+            ans = helper(costs, s, i +1);
+        }
+      
+        memo[i] = ans;
+       
+        return ans;
+    }
+    
+    
+    int mincostTickets(vector<int>& days, vector<int>& costs) {
+        
+        // memoized 
+        
+        // if current day is travel day (present in days[]) , then we have to purchase a ticket and
+        // this day is the starting of journey 
+        // we'll explore all the 3 options and pick minimum one
+        // 1) buy 1-day pass and move to the current + 1 day 
+        // 2) buy 7-day pass and move to the current + 7 days
+        // 3) buy 30-day pass and move to the current + 30 days
+        
+        unordered_set<int> s(days.begin() , days.end()); // Travel days
+      
+        
+        return  helper( costs, s, 1);
+    
+        
+    }
+};
