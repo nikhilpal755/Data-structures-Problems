@@ -1,0 +1,63 @@
+https://www.geeksforgeeks.org/longest-palindromic-subsequence-dp-12/
+
+Edutorial : look into dp book
+
+------------------------ Top down ---------------------------
+class Solution {
+public:
+    
+    int LPS(string& s , int i , int j, vector<vector<int>>& memo){
+
+        if( i > j )return 0;
+        if( i == j)return 1;
+        
+        if(memo[i][j] > 0)return memo[i][j];
+       
+        
+        if(s[i] == s[j]){
+            memo[i][j] = LPS(s , i + 1 , j - 1, memo) + 2;
+        }else{
+            memo[i][j] = max(LPS(s, i + 1 , j, memo) , LPS(s, i, j- 1, memo));
+        }
+        
+        return memo[i][j];
+    }
+    int longestPalindromeSubseq(string s) {
+        int n = s.size() ;
+        if(n <= 0)return 0;
+        
+        vector<vector<int>> memo(n , vector<int>(n , 0));
+        return LPS(s , 0 , n- 1 , memo);
+        
+    }
+};
+
+
+
+---------------------- Bottom Up ---------------------------------
+
+class Solution {
+public:
+
+    int longestPalindromeSubseq(string s) {
+        int n = s.size() ;
+        if(n <= 0)return 0;
+        
+        vector<vector<int>> dp(n , vector<int>(n , 0));
+        
+        for(int i= n-1;i>=0; i--){// filling from the bottom row
+            dp[i][i] = 1;// single chr is palindrome itself
+            for(int j=i+1; j< n;j++){
+                if(s[i] == s[j]){// consider both s[i] and s[j] in lps
+                    dp[i][j] = 2 + dp[i+1][j-1];
+                }else{
+                    dp[i][j] = max(dp[i][j-1], dp[i+1][j]);
+                }
+            }
+        }
+        
+        return dp[0][n - 1];
+        
+    }
+};
+
