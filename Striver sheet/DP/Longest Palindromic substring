@@ -1,0 +1,40 @@
+https://leetcode.com/problems/longest-palindromic-substring/
+
+Edu : https://leetcode.com/problems/longest-palindromic-substring/discuss/844586/Very-Easy-To-understand-oror-Well-commented-oror-2-Approaches-oror-Thinking-Process
+------------------------- DP -------------------------------------
+
+
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        
+        int n = s.size();
+        vector<vector<bool>> dp(n , vector<bool>(n , false));
+        
+        // dp[i][j] -> ith chr se jth chr tk check krega ki palidrome hai ki nhi(true ,false)
+        
+        for(int i=0; i<n; i++){
+            dp[i][i] = true;
+            if(i < n-1 and s[i] == s[i + 1])dp[i][i+1] = true;
+        }
+        for(int i=n-1; i>=0 ;i--){
+            for(int j=i+2; j<n ;j++){
+                if(s[i] == s[j])dp[i][j] = dp[i+1][j-1];
+            }
+        }
+        
+        int mx = 0;
+        string ans="";
+        for(int i=0;i<n; i++){
+            for(int j=i; j<n ;j++){
+                if(dp[i][j] and j- i + 1 > mx){
+                    mx = j - i + 1;
+                    ans = s.substr(i, j - i + 1);
+                }
+            }
+        }
+        
+        return ans;
+        
+    }
+};
