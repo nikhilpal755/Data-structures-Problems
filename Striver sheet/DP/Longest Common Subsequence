@@ -1,0 +1,58 @@
+https://leetcode.com/problems/longest-common-subsequence/
+
+Edutorial : Refer dp book
+
+
+---------------------- Top down ---------------------------------
+class Solution {
+public:
+    int LCS(string& text1, string& text2, int i , int j,vector<vector<int>>& memo){
+        
+        if(i >= text1.size() or j >= text2.size())return 0;
+        
+        if(memo[i][j] > 0)return memo[i][j];
+        
+        if(text1[i] == text2[j])memo[i][j] = LCS(text1, text2, i+ 1, j+1, memo) + 1;
+        else memo[i][j] = max(LCS(text1, text2,i+1,j,memo ), LCS(text1, text2, i , j+1, memo));
+        
+        return memo[i][j];
+        
+    }
+    int longestCommonSubsequence(string text1, string text2) {
+        
+        int n = text1.size();
+        int m = text2.size();
+        
+        vector<vector<int>> memo(n , vector<int>(m ,0));
+        return LCS(text1, text2, 0, 0 , memo);
+    }
+};
+
+
+
+------------------------- Bottom up ------------------------------
+
+lass Solution {
+public:
+    
+    int longestCommonSubsequence(string text1, string text2) {
+        
+        int n = text1.size();
+        int m = text2.size();
+        
+        vector<vector<int>> dp(n +1, vector<int>(m +1 ,0));
+        
+        
+        for(int i=1; i<= n; i++){
+            for(int j=1; j<= m; j++){
+                if(text1[i-1] == text2[j -1]){
+                    dp[i][j] = dp[i-1][j-1] + 1;
+                }else{
+                    dp[i][j] = max(dp[i-1][j] , dp[i][j-1]);
+                }
+            }
+        }
+        
+        return dp[n][m];
+    }
+};
