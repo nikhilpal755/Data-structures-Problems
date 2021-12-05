@@ -1,0 +1,76 @@
+Leetcode : https://leetcode.com/contest/weekly-contest-270/problems/step-by-step-directions-from-a-binary-tree-node-to-another/
+
+
+----------------------- Binary tree ( LCA problem ) ---------------------
+
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+ 
+class Solution {
+public:
+    TreeNode* LCA(TreeNode* root , int s, int d){
+        if(!root)return root;
+        if(root -> val == s or root -> val == d)return root;
+        
+        auto l = LCA(root -> left, s , d);
+        auto r = LCA(root -> right, s, d);
+        
+        if(l && r)return root;
+        if(l)return l;
+        if(r)return r;
+        return NULL;
+    }
+    
+    bool findDistance(TreeNode* root, int value , string& s){
+        
+        if(!root)return false;
+        if(root -> val == value )return true;
+        
+        s += 'L';
+        int l = findDistance(root -> left, value ,s);
+        if(l)return true;
+        s.pop_back();
+        
+        s += 'R';
+        int r = findDistance(root -> right, value, s);
+        if(r)return true;
+        s.pop_back();
+        
+        return false;
+        
+    }
+    string getDirections(TreeNode* root, int startValue, int destValue) {
+        
+        // 1)find lca
+        // 2)string d1 = distance between startvalue and lca(in terms of 'L','R')
+        // 3)string d2 = distance between destvalue and lca
+        // 4) change all the values in d1 to 'U'
+        // 5) return d1 + d2
+        
+        if(!root)return "";
+        
+        auto lca = LCA(root,startValue,destValue );
+        
+        string s1="", s2="";
+        findDistance(lca, startValue,s1);
+        findDistance(lca, destValue ,s2);
+        
+        for(auto &X : s1)X ='U';
+        
+        return s1 + s2;
+        
+        
+    }
+};
+
+
