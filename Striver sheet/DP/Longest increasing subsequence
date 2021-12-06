@@ -1,0 +1,118 @@
+Problem :  https://leetcode.com/problems/longest-increasing-subsequence/
+
+Edu : https://www.geeksforgeeks.org/longest-increasing-subsequence-dp-3/
+
+All approaches : https://leetcode.com/problems/longest-increasing-subsequence/discuss/1326552/Optimization-From-Brute-Force-to-Dynamic-Programming-Explained!
+
+
+--------------------- Top down(2d Memo TLE) -------------------------------
+
+class Solution {
+public:
+    int LIShelper(vector<int>&nums , int prev , int i, vector<vector<int>>& memo){
+        if( i == nums.size())return 0;
+        
+        if(prev != -1 and memo[i][prev] > 0 )return memo[i][prev];
+        
+        // take
+        int take = 0;
+        if(prev == -1 || nums[i] > nums[prev]){
+            // if only one element , then have to take it (prev == -1)
+            // else we need to check it is greater than last element of running suqsequence(prev) 
+            
+             take = LIShelper(nums, i , i + 1, memo) + 1;// lis length increases by 1
+        }
+        
+        // don't take
+        int dontTake = LIShelper(nums, prev, i+1, memo);
+        
+        if(prev != -1)memo[i][prev] = max(take , dontTake); 
+        return max(take, dontTake);
+        
+        
+    }
+    
+    int lengthOfLIS(vector<int>& nums) {
+        
+        vector<vector<int>> memo(nums.size() , vector<int>(nums.size(), -1));
+        
+        // memo[i][j] -> 1st dimension for prev(last element of running subseq)
+        //               2nd dimension for index
+        
+        
+        return LIShelper(nums , -1 , 0, memo);
+
+    }
+};
+
+-------------------- 1D (ACCEPTED) ------------------------
+
+class Solution {
+public:
+    int LIShelper(vector<int>&nums , int prev , int i, vector<int>& memo){
+        if( i == nums.size())return 0;
+        
+        if(prev != -1 and memo[prev] > 0 )return memo[prev];
+        
+        // take
+        int take = 0;
+        if(prev == -1 || nums[i] > nums[prev]){
+            // if only one element , then have to take it (prev == -1)
+            // else we nee to check it is greater than last element of running suqsequence(prev) 
+            
+             take = LIShelper(nums, i , i + 1, memo) + 1;// lis length increases by 1
+        }
+        
+        // don't take
+        int dontTake = LIShelper(nums, prev, i+1, memo);
+        
+        if(prev != -1)memo[prev] = max(take , dontTake); 
+        return max(take, dontTake);
+        
+        
+    }
+    
+    int lengthOfLIS(vector<int>& nums) {
+        
+
+        vector<int> memo(nums.size() , -1);// prev
+       
+        
+        return LIShelper(nums , -1 , 0, memo);
+
+    }
+};
+
+
+------------------------ Bottom up ---------------------------
+
+class Solution {
+public:
+  
+    
+    int lengthOfLIS(vector<int>& nums) {
+      
+        vector<int> dp(nums.size() , 1);
+        
+        // dp[i] -> LIS ending at index i
+        
+        int ans = 1;
+        
+        for(int i=0; i<nums.size(); i++){
+             int mx = INT_MIN;
+            for(int j=0; j < i ;j++){
+               if(nums[i] > nums[j]) {
+                   mx = max(mx, dp[j]);
+               }
+            }
+            if(mx != INT_MIN)dp[i] = mx + 1;
+            if(dp[i] > ans)ans = dp[i];
+        }
+       
+        
+        return ans;
+        
+        
+
+    }
+};
