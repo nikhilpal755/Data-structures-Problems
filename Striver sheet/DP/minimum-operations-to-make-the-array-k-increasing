@@ -1,0 +1,61 @@
+https://leetcode.com/problems/minimum-operations-to-make-the-array-k-increasing/
+
+
+Very Good problem for LIS understanding
+
+Edutorial : https://leetcode.com/problems/minimum-operations-to-make-the-array-k-increasing/discuss/1635013/C%2B%2BPython-Longest-Non-Decreasing-Subsequence-Clean-and-Concise
+Vedio edu : https://www.youtube.com/watch?v=tGq4sp1Z1KU
+
+class Solution {
+public:
+    
+    // ------- LIS in nlogn -----------
+    int LIS(vector<int> group){
+
+        vector<int> v;
+        v.push_back(group[0]);
+        
+        int count = 0;
+        for(int i=1; i<group.size() ;i++){
+           
+            if(group[i] >= v.back()){
+                v.push_back(group[i]);
+       
+            }
+            else {
+                int idx = upper_bound(v.begin() , v.end(), group[i]) - v.begin();
+                
+                // upper_bound because duplicate elements are also present
+                // Eg : 2 2 2 2 2 1 1 4 4 3 3 3 3 3
+                // With Lower bound lis -> 1 2 2 2 2 3 4   ==> length = 7  
+                // With upper bound lis -> 2 2 2 2 2 3 3 3 3 3  ==> length = 10 (actual ans)
+                
+                v[idx] = group[i];
+            }
+          
+        }
+      
+        return v.size();
+    }
+    int kIncreasing(vector<int>& arr, int k) {
+        int ans =0;
+        
+        int n = arr.size();
+        for(int i=0;i<k;i++){// no of groups = k
+            
+            vector<int> group;
+            for(int j=i; j<n; j+=k){
+                group.push_back(arr[j]);
+            }
+            
+          
+            ans += group.size() - LIS(group);
+      
+            
+        }
+        return ans;
+    }
+    
+
+};
+
