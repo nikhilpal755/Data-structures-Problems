@@ -1,0 +1,61 @@
+https://leetcode.com/problems/find-the-longest-valid-obstacle-course-at-each-position/
+
+Edutorial : https://leetcode.com/problems/find-the-longest-valid-obstacle-course-at-each-position/discuss/1390159/C%2B%2BPython-Same-with-Longest-Increasing-Subsequence-problem-Clean-and-Concise
+
+For LIS in NlogN :
+
+Intution ( https://www.youtube.com/watch?v=66w10xKzbRM&t=1s ) ,
+https://www.geeksforgeeks.org/longest-increasing-subsequence-dp-3/
+
+class Solution {
+public:
+    vector<int> longestObstacleCourseAtEachPosition(vector<int>& obstacles) {
+        
+        int n = obstacles.size();
+        
+        vector<int> dp(n , 1);
+        
+        
+        // dp[i] -->> length of  longest non-decreasing subsequence(lnds)  ending at index i
+        
+        // just like LIS in nlogn
+        vector<int> v;  // (v does not contain lis , we are only using it to find the length of lis)
+        v.push_back(obstacles[0]);
+        
+        for(int i=1;i<n ; i++){
+            if(obstacles[i] >= v.back()){// all the elements in v are part of lnds ending at current index
+                v.push_back(obstacles[i]);
+                dp[i] = v.size();
+                
+            }else{
+                int idx = upper_bound(v.begin() , v.end() , obstacles[i]) - v.begin();
+                v[idx] = obstacles[i];
+                dp[i] = idx + 1; // we can't add v.size() here because all the elements are not the
+                // part of lnds ending at current index 
+                
+              
+                // so, when we calculate upper bound index of current element in v, all the elements
+                // which are smaller than idx are part of lnds which are ending on current index
+                
+                // EG : obstacle[] : {2,2,1}
+                // when, obstacle[i] = 1
+                //  v[] -> [2, 2], dp[] -> [1,2]
+                // v.back() > 1 ==> upper_bound of 1 in v is 0 -> v[0] = 1
+                // v[] -> [1,2] , dp[] -> [1,2,2]
+                
+                
+                // if we see carefully here,  we can notice that [1,2] is not a susequence of [2,2,1]
+                // but  [1] is a subsequence
+                
+                // hence, we need idx + 1 to store the length of lnds ending at current index
+                // where idx = upper_bound of current element in v
+                
+                // Now, v[] -> [1, 2] , dp[] -> [1, 2, 1]
+                
+            }
+        
+        }
+        return dp;
+        
+    }
+};
