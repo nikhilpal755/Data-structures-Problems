@@ -1,0 +1,57 @@
+----- Top Down (java) -------------
+class Solution{
+    static int matrixChainHelper(int[] arr, int i, int j , int[][] memo){
+        if( i == j)return 0;
+        if(memo[i][j] != Integer.MAX_VALUE)return memo[i][j];
+        
+        for(int k=i ;k< j;k++){
+            memo[i][j] = Math.min(memo[i][j], ( matrixChainHelper(arr, i , k, memo) + matrixChainHelper
+            (arr, k + 1, j, memo ) + arr[i-1] * arr[k] * arr[j]));
+        }
+        return memo[i][j];
+    }
+    static int matrixMultiplication(int N, int arr[])
+    {
+        // code here
+        
+        int[][] memo = new int[N][N];
+        for(int i=0;i < N; i++){
+            for(int j=0; j< N; j++){
+                memo[i][j] = Integer.MAX_VALUE;
+            }
+        }
+        int i = 1; 
+        int j = N-1;
+        return matrixChainHelper(arr, i , j, memo);
+        
+    }
+}
+
+
+------  C++ --------------
+
+class Solution{
+public:
+    
+    int matrixMultiplicationHelper(int arr[] , int i , int j, vector<vector<int>>& dp){
+        if(i == j){// no of mulitplication required in one matrix
+            return 0;
+        }
+        if(dp[i][j] != INT_MAX )return dp[i][j];
+    
+        for(int k = i; k < j; k++){
+         dp[i][j] = min(dp[i][j] ,( matrixMultiplicationHelper(arr, i , k, dp) + matrixMultiplicationHelper(arr, k + 1, j , dp) +
+            arr[i - 1]*arr[k]*arr[j] ));    
+        }
+        
+        return dp[i][j];
+    }
+    int matrixMultiplication(int N, int arr[])
+    {
+        // code here
+        int i = 1 ;
+        int j = N - 1;
+        vector<vector<int>> dp(N, vector<int>(N, INT_MAX));
+        return matrixMultiplicationHelper(arr, i , j, dp);
+    }
+};
