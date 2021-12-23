@@ -1,0 +1,35 @@
+https://leetcode.com/problems/word-break/
+
+
+-----------------Recursive + set(cache)---------------
+
+class Solution {
+public:
+    
+    bool helper(string s , unordered_set<string>& st, set<string>& vis){
+
+        if(s.size() == 0)return true;
+        
+        if(vis.find(s) == vis.end()){
+            
+            for(int i=1;i<=s.size(); i++){
+                string sub = s.substr(0 , i);
+                if(st.find(sub) != st.end() and helper(s.substr(i), st, vis))return true;
+            }
+            
+            vis.insert(s);
+        }
+        return false;
+        
+        
+    }
+    bool wordBreak(string s, vector<string>& wordDict) {
+       
+        unordered_set<string> st(wordDict.begin() , wordDict.end());
+        
+        set<string> vis;
+        return helper(s, st,vis);
+       
+        
+    }
+};
