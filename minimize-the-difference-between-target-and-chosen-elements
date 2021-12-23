@@ -1,0 +1,35 @@
+https://leetcode.com/problems/minimize-the-difference-between-target-and-chosen-elements/
+
+
+-------- Typical Backtracking problem------------------
+
+
+class Solution {
+public:
+ 
+    int memo[71][5000];
+    int helper(vector<vector<int>>&mat, int target, int i , int curr){
+        if(i >= mat.size()){
+            return abs(target - curr);
+        }
+        if(memo[i][curr] != -1){
+            
+            return memo[i][curr];
+        }
+        
+        int x = INT_MAX;
+        
+        for(int j=0; j<mat[0].size();j++){
+            x = min(x, helper(mat, target, i + 1, curr + mat[i][j]));
+        }
+        
+        return memo[i][curr] = x;
+        
+    }
+    int minimizeTheDifference(vector<vector<int>>& mat, int target) {
+        memset(memo,-1, sizeof(memo));
+        return helper(mat, target, 0 ,0);
+        
+       
+    }
+};
