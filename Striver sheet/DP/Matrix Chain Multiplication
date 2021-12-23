@@ -1,3 +1,7 @@
+https://www.geeksforgeeks.org/matrix-chain-multiplication-dp-8/
+
+Edutorial(bottom Up) => https://www.youtube.com/watch?v=pEYwLmGJcvs&t=650s
+
 ----- Top Down (java) -------------
 class Solution{
     static int matrixChainHelper(int[] arr, int i, int j , int[][] memo){
