@@ -1,0 +1,46 @@
+https://leetcode.com/problems/jump-game-ii/
+
+
+Edutorial : https://leetcode.com/problems/jump-game-ii/discuss/1192401/Easy-Solutions-w-Explanation-or-Optimizations-from-Brute-Force-to-DP-to-Greedy-BFS
+
+------------ DP -------------------
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        
+        int n = nums.size();
+        vector<int> dp(n , INT_MAX);
+        dp[0] = 0;
+        
+        for(int i=0;i<n;i++){
+            for(int j=1; j<=nums[i] and i + j < n; j++){
+                dp[i + j] = min(dp[i + j], dp[i] + 1);
+            }
+        }
+        
+        return dp[n-1];
+        
+    }
+};
+
+------------ Greedy -------------------
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        
+        int jumpIdx = 0;// start point
+        int maxJumpSoFar = 0;
+        int jumps = 0;
+        
+        for(int i=0;i<nums.size() - 1;i++){
+            maxJumpSoFar= max(maxJumpSoFar, i + nums[i]);
+            if(i == jumpIdx){
+                jumps++;
+                jumpIdx = maxJumpSoFar;
+            }
+        }
+        
+        return jumps;
+    }
+};
+
