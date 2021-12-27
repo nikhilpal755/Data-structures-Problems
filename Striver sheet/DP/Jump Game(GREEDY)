@@ -1,0 +1,24 @@
+https://leetcode.com/problems/jump-game/
+
+
+--------------------------------------------
+class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        
+        int n = nums.size();
+        int currIdx = 0;// jump krke maximum khn tk pahunch skte hai
+    
+       for(int i=0;i<n;i++){
+           if(currIdx < i)return false;
+           // for eg : [3, 2, 1, 0 ,4] 
+           // we know that at index 3, we can reach upto index 3(value of currIdx) only .
+           // I cannot jump from index 3 to index 4 
+          if(i + nums[i] > currIdx)currIdx = i + nums[i];
+       }
+        return currIdx >= n-1;
+        
+        
+    }
+};
+
