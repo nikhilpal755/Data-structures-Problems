@@ -1,0 +1,64 @@
+------------- Top Down(using hashmap) ----------
+
+-> we could remove hasmap as well by adding while loop as well ( https://leetcode.com/problems/delete-and-earn/discuss/284609/For-top-down-DP-fans-Java-2ms-solution-explained )
+
+class Solution {
+public:
+    
+    
+    int helper(vector<int>&nums , map<int,int>&m, int i,vector<int>&memo){
+        // take or don't take(just like house Robber) but here we have duplicates elements as well
+        if(i >= nums.size())return 0;
+        
+        if(memo[nums[i]] != -1)return memo[nums[i]];
+        
+        int take = helper(nums, m , i + m[nums[i]]+m[nums[i]+1], memo) + m[nums[i]]*nums[i];
+        // if we take the current element then don't take the adjacent ones
+        int dontTake  = helper(nums, m , i +m[nums[i]], memo);
+        // if we don't take the current element then take the adjacent ones
+        
+        memo[nums[i]] = max(take, dontTake);
+        return max(take, dontTake);
+        
+    }
+    int deleteAndEarn(vector<int>& nums) {
+        
+       sort(nums.begin(), nums.end());
+        
+        
+        map<int,int> m;
+        for(auto X : nums)m[X]++;
+        
+        vector<int> memo(20005 , -1);
+        return helper(nums, m ,0, memo);
+        
+        
+    }
+};
+
+
+------------ Bottom up --------
+
+class Solution {
+public:
+    
+    int deleteAndEarn(vector<int>& nums) {
+        
+       sort(nums.begin(), nums.end());
+        
+        int n = nums.size();
+        vector<int> freq(10005, 0), dp(20005 , 0);
+        
+        for(auto X : nums)freq[X]++;
+        
+        dp[0] = 0;
+        dp[1] = freq[1];
+        for(int i=2;i<=nums[n-1];i++){
+            dp[i] = max(dp[i-2] + freq[i]*i , dp[i-1] );
+        }
+        
+        return dp[nums[n-1]];
+        
+        
+    }
+};
