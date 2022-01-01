@@ -1,0 +1,45 @@
+https://leetcode.com/problems/maximum-sum-circular-subarray/
+
+
+
+Edutorial : https://leetcode.com/problems/maximum-sum-circular-subarray/discuss/633401/Kadane-Algorithm-Trick-beats-100-Java-Explained
+
+
+class Solution {
+public:
+    int maxSubarraySumCircular(vector<int>& nums) {
+        
+        int n = nums.size();
+        
+        int mx = INT_MIN;// storing max sum subarray
+        int mn = INT_MAX;// storing min sum subarray
+        
+        // ans = max(max non-circular subarray sum, max cirular subarray sum)
+        // ans = max(kadane's , n - (min subarray sum));
+        int sum1= 0 , sum2= 0 , totalSum = 0;
+        
+        // sum1 -> used for calculating non-circular subarray sum
+        // sum2 -> used for calculating circular subarray sum
+ 
+      
+        for(int i=0;i<n;i++){
+            totalSum += nums[i];
+            sum1 += nums[i];
+            mx = max(mx, sum1);
+            if(sum1 < 0)sum1 = 0;// rejecting the current subarray
+           
+            
+            sum2 += nums[i];
+            mn = min(mn, sum2);
+            if(sum2 > 0)sum2 = 0;
+
+        
+     
+            
+        }
+        // if all the elements are -ve
+        if(totalSum == mn)return mx;
+        
+        return max(mx, totalSum - mn);
+    }
+};
