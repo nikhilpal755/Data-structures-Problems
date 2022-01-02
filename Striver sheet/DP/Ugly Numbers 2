@@ -1,0 +1,41 @@
+https://leetcode.com/problems/ugly-number-ii/
+
+
+
+Edutorial : https://leetcode.com/problems/ugly-number-ii/discuss/69364/My-16ms-C%2B%2B-DP-solution-with-short-explanation
+(------------ Look for 1st comment ----------)
+
+
+
+---------------------- DP -------------------------
+class Solution {
+public:
+ 
+    int nthUglyNumber(int n) {
+       
+
+        if(n == 1)return 1;
+        
+        int cnt = 0;
+        // 3 pointers
+        int i = 0, j = 0, k = 0;
+        int ugly = 1;
+        vector<int> dp(n );
+        dp[0] = 1;
+        
+        for(int p=1; p<n ;p++){
+            
+            dp[p] = min(min(2*dp[i], 3*dp[j]), 5*dp[k]);
+           
+
+            if(dp[p] == 2*dp[i])i++;
+            if(dp[p] == 3*dp[j])j++;
+            if(dp[p] == 5*dp[k])k++;
+         
+             
+
+    
+        }
+        return dp[n-1];
+    }
+};
