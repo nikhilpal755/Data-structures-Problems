@@ -1,0 +1,46 @@
+https://leetcode.com/problems/decode-ways/
+
+
+Good Edutorial : https://leetcode.com/problems/decode-ways/discuss/1410794/C%2B%2BPython-From-Top-down-DP-to-Bottom-up-DP-O(1)-Space-Clean-and-Concise
+
+
+---------------------------------------------
+class Solution {
+public:
+    int numDecodings(string s) {
+           
+        int n = s.size();
+        vector<int> dp(n + 1);
+        
+        if(s[0] == '0')return 0;
+        
+        dp[0] = 1;// empty string -> one way to decode
+        dp[1] = s[0] == '0' ? 0 : 1; // 1 length string
+        
+        
+        
+        for(int i=2;i<=n;i++){
+            string first = s.substr(i-1,1);
+            string second = s.substr(i-2,2);
+            
+            int x = stoi(first);
+            int y = stoi(second);
+   
+            if(x >= 1  and x <= 9){
+                dp[i] += dp[i-1] ;
+            }
+            
+            if(y >= 10 and y <= 26){
+                dp[i] += dp[i-2];
+            }
+            
+        }
+        
+        return dp[n];
+        
+        
+    
+        
+        
+    }
+};
