@@ -1,5 +1,7 @@
 https://leetcode.com/problems/edit-distance/
 
+https://leetcode.com/problems/edit-distance/discuss/25846/C%2B%2B-O(n)-space-DP
+
 -------------------- Bottom up (2D) ---------------------
 
 class Solution {
