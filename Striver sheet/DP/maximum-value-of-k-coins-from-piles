@@ -1,0 +1,49 @@
+https://leetcode.com/problems/maximum-value-of-k-coins-from-piles/
+
+
+
+Edutorial : 1) https://leetcode.com/problems/maximum-value-of-k-coins-from-piles/discuss/1887130/C%2B%2B-or-DP-%2B-Memoization
+            2) Intution => 2nd Comment of : https://leetcode.com/problems/maximum-value-of-k-coins-from-piles/discuss/1887010/JavaC%2B%2BPython-Top-down-DP-solution
+            
+            
+     class Solution {
+public:
+    int helper(vector<vector<int>>& piles, int idx , vector<vector<int>>& memo, int k){
+        
+        if(idx >= piles.size())return 0;
+        
+        if(memo[idx][k] != -1)return memo[idx][k];
+        
+        
+        int currSum = 0;
+        int maxSum = 0;
+        
+        // don't take the coin from the top of current pile
+        int dontTake = helper(piles, idx + 1, memo, k);
+        maxSum = max(maxSum , dontTake);
+        // take -> any prefix 
+        // if i take x coins from the current pile, then tqke remaining (k - x)coins from rest of piles
+        
+        for(int i=0;i <piles[idx].size(); i++){
+            currSum += piles[idx][i];
+            
+            if((i + 1) <= k){
+                maxSum = max(maxSum , currSum + helper(piles, idx + 1, memo, k - (i + 1)));    
+            }
+        }
+        
+        return memo[idx][k] = maxSum ;
+    }
+    int maxValueOfCoins(vector<vector<int>>& piles, int k) {
+        
+        
+        int n = piles.size();
+    
+        vector<vector<int>> memo(n + 1, vector<int>(k + 1, -1));
+        int idx = 0;
+        return helper(piles,idx , memo, k );
+        
+        
+    }
+};
+            
