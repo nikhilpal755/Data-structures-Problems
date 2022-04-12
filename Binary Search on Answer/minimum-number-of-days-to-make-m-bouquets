@@ -1,0 +1,65 @@
+https://leetcode.com/problems/minimum-number-of-days-to-make-m-bouquets/
+
+Edutorials: https://leetcode.com/problems/minimum-number-of-days-to-make-m-bouquets/discuss/731921/Simple-C%2B%2B-explanation
+
+
+
+
+class Solution {
+public:
+    
+    bool check(vector<int>&bloomDay, int mid, int k, int m){
+        
+        int flower_cnt = 0;
+        int bouquet_cnt = 0;
+        for(auto bloom : bloomDay){
+            if(bloom > mid){
+                flower_cnt = 0;// it breaks the chain, becuase it's bloomday is more than number of days we have -> mid
+                // to isko kisi bhi bouquet ka hissa nhi bna payenge
+                // also we need k consecutive flowers -> it breaks the chain
+            }else{
+                flower_cnt++;
+                if(flower_cnt == k){
+                    bouquet_cnt++;
+                    flower_cnt = 0;
+                }
+            }
+        }
+        
+        if(bouquet_cnt >= m){
+            return true;
+        }
+        return false;
+        
+    }
+    int minDays(vector<int>& bloomDay, int m, int k) {
+        
+        
+        
+        // Binary Search on Answer
+       
+        
+        int n = bloomDay.size();
+         if(m*k > n)return -1;
+        int low = 1;// (minimum number of days to make m bouquets)
+        int high = *max_element(bloomDay.begin(), bloomDay.end()) ;
+        
+        int ans = 0;
+        while(low <= high){
+            
+            int mid = low + (high - low)/2;
+            
+            if(check(bloomDay, mid, k , m)){// check if using mid days , we can make m bouquets
+                // for each bouquet -> check if we have k adjacent flowers
+                ans = mid;
+                high = mid -1 ;
+                
+            }else{
+                low = mid + 1;
+            }
+        }
+        
+        return ans;
+        
+    }
+};
