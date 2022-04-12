@@ -1,0 +1,72 @@
+https://practice.geeksforgeeks.org/contest/interview-series-45/problems/#
+
+Edutorial :  
+1) Hashmap + Sliding Window  -->> https://iq.opengenus.org/substrings-with-k-distinct-characters/
+2) Freq[26] + Sliding Window  -->> youtube.com/watch?v=rTefnFlCwpI
+ 
+
+#include<bits/stdc++.h>
+using namespace std;
+
+
+class Solution
+{
+  public:
+    long long int helper(string s, int k){
+        // unordered_map<char,long long int> freq;
+        vector<int> freq(26, 0);
+    	
+    	long long int n = s.size();
+    	long long int j = 0;// pointer to the starting of sliding window
+    	long long int cnt1 = 0;//count of substring with atmost k distinct characters
+    	long long int distinct = 0;
+    	for(long long int i=0;i<n; i++){
+    	    freq[s[i] - 'a']++;
+    	    if(freq[s[i] - 'a'] == 1)distinct++;
+    	    
+    	    
+    	    while(distinct > k and j <= i){// decrease window size by deleting elements 
+    	    // from the start of the window -> to make atmost k distict characters
+    	    
+    	       freq[s[j]- 'a']--;
+    	       if(freq[s[j] - 'a'] == 0)distinct--;
+    	       
+    	       j++;
+    	        
+    	    }
+    	    cnt1 += i - j + 1;
+    	}
+    	
+    	return cnt1;
+        
+    }
+    long long int substrCount (string s, int k) {
+    	// number of substrings with exactly k distinct characters = 
+    	// number of substrings with atmost k distinct characters - number of substrings
+    	// with atmost k - 1 distinct characters
+    	
+    	
+    	// How to calculate the number of strings with atmost k distinct characters?
+    	// -> Hashmap (to check distinctness) + Sliding window  -->> TLE(it should work as well)
+    	// -> freq[26] + Sliding window  -->> AC
+    	
+    	
+    	return helper(s , k ) - helper(s, k -1);
+    	
+    	
+    	
+    }
+};
+
+
+
+int main()
+{
+    int t; cin >> t;
+    while (t--)
+	{
+		string s; cin >> s;
+		int k; cin >> k;
+		Solution ob;
+		cout <<ob.substrCount (s, k) << endl;
+	}
