@@ -1,0 +1,62 @@
+Q : https://leetcode.com/problems/minimum-size-subarray-sum/
+
+Edu : https://leetcode.com/problems/minimum-size-subarray-sum/solution/
+
+class Solution {
+public:
+//     bool isValid(vector<int>&prefix, int j, vector<int>&nums,int target){
+//         int i = 0;
+//         --j;
+//         if(j < 0)return false;
+//         while(i != prefix.size() and j != prefix.size()){
+//             int sum = prefix[j] - prefix[i]+ nums[i];
+//             if(sum >= target)return true;
+            
+//             i++;
+//             j++;
+//         }
+        
+//         return false;
+//     }
+    
+    int minSubArrayLen(int target, vector<int>& nums) {
+        // sliding window + binary search
+//         int n = nums.size();
+//         int low = 0;
+//         int high = n;
+//         vector<int> prefix(n);
+//         prefix[0] = nums[0];
+//         for(int i=1;i<nums.size(); i++){
+//             prefix[i] = prefix[i-1] + nums[i]; 
+//         }
+//         int ans= 0;
+//         while(low <= high){
+//             int mid = low + (high - low)/2;
+            
+//             if(isValid(prefix, mid, nums, target)){
+//                 ans = mid;
+//                 high = mid - 1;
+//             }else{
+//                 low = mid + 1;
+//             }
+//         }
+        
+//         return ans;
+        
+        // sliding window
+        int n = nums.size();
+        
+        int left = 0;
+        int ans = INT_MAX;
+        int sum = 0;
+        for(int i=0;i<n; i++){
+            sum += nums[i];
+            while(sum >= target){
+                ans = min(ans, i - left + 1);
+                sum -= nums[left++];
+            }
+        }
+        
+        return (ans == INT_MAX)? 0: ans;
+    }
+};
