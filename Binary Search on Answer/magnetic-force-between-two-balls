@@ -1,0 +1,56 @@
+https://leetcode.com/problems/magnetic-force-between-two-balls/
+
+---- I did it by my self 😁----
+
+class Solution {
+public:
+    
+    bool isForceMaximum(vector<int>&position, int totalBalls, long long force){
+        
+        int n = position.size();
+        long long left = position[0];
+        // two pointers
+        
+        int cnt = 1;
+        for(int i=1; i<n; i++){
+            if(position[i] - left >= force){
+                left = position[i];
+                cnt++;
+            }
+        }
+        
+        if(cnt >= totalBalls)return true;
+        
+        return false;
+        
+        
+    }
+    
+    int maxDistance(vector<int>& position, int m) {
+        
+        sort(position.begin(), position.end());
+        
+        // Binary search on force
+        
+        int n = position.size();
+        
+        long long low = 1;
+        long long high = *max_element(position.begin(), position.end()) - 1;
+        int ans = 0;
+        while(low <= high){
+            
+            long long mid = low + (high - low)/2;// force
+            
+            if(isForceMaximum(position, m, mid)){
+                
+                ans= mid;
+                low = mid + 1;
+            }else{
+                high = mid - 1;
+            }
+        }
+        
+        return ans;
+        
+    }
+};
