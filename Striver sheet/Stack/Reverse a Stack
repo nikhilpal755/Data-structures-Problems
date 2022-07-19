@@ -1,0 +1,52 @@
+------>      https://www.geeksforgeeks.org/reverse-a-stack-using-recursion/
+
+------------ Without using while, for loop ----------------
+
+-------------  WOW !!!! ---------------------
+class Solution{
+public:
+    stack<int> st;
+    void insert_at_bottom(int x){
+        if(st.size() == 0)st.push(x);
+        else{
+            int a = st.top();
+            st.pop();
+            
+            insert_at_bottom(x);
+            
+            st.push(a);
+        }
+    }
+    void reverseHelper(){
+        
+        if(st.size() > 0){
+            int x = st.top();
+            st.pop();
+            
+            reverseHelper();
+            // cout << x << " ";
+            
+            insert_at_bottom(x);
+        }
+    }
+    vector<int> Reverse(stack<int> s){
+        
+        // make use of call stack in recursion
+        st = s;
+       
+        reverseHelper();
+        
+        int n = st.size();
+        vector<int> res(n);
+        int i = 0;
+        while(!st.empty()){
+            // cout << st.top() << " ";
+            res[n- i - 1] = st.top();
+            st.pop();
+            i++;
+        }
+       
+        return res;
+        
+    }
+};
