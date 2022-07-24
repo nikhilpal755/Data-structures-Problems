@@ -1,0 +1,64 @@
+https://leetcode.com/contest/weekly-contest-303/problems/number-of-excellent-pairs/
+
+https://leetcode.com/problems/number-of-excellent-pairs/discuss/2324647/Easy-C%2B%2B-or-Set-Bits-Logic
+
+
+----------------------------------------
+Observation :
+=> Distinct :- remove duplicates from nums
+=> setBits(x || y) + setBits(x&&y) = setBits(x) + setBits(y);  
+
+Apporach:
+	1) remove duplicates using set(s)
+	2) count set bits of all the elements in s and store it in some vector(setbits)
+	3) Problem is now to find the pairs whose sum of set bits >= k
+	4) Apply Two sum method:
+				- sort the vector setbits
+				- iterate over setbits vector
+				- find the lower_bound of k - setbits[i] in setbits vector
+				- all the elements >= lower_bound have sum of bits >= k , add it in the answer
+
+
+-------------------- Sol ------------------------------
+class Solution {
+public:
+    long long countExcellentPairs(vector<int>& nums, int k) {
+        
+        int n = nums.size();
+        
+        // Observation 
+        // => Distinct :- remove duplicates from nums
+        // => setBits(x || y) + setBits(x&&y) = setBits(x) + setBits(y);  
+        
+        
+        // removing duplicates
+        unordered_set<int>s(nums.begin(), nums.end());
+        
+        // count set bits of each and every element in nums
+        vector<int> store;
+        for(auto X : s){
+            int cnt = 0;
+            while(X > 0){
+                cnt += (X%2);
+                X/=2;
+            }
+            store.push_back(cnt);
+        }
+        
+        // problem is now TWO sum problem :
+        // now we need to find the pairs whose sum of count of bits >= k
+        long long ans = 0;
+        sort(store.begin(), store.end());
+        
+        int m = store.size();
+        for(int i=0; i<m ; i++){
+            int idx_of_second = lower_bound(store.begin(), store.end(), k-store[i]) - store.begin();
+            
+            if(idx_of_second < m)ans += m - idx_of_second;
+            
+        }
+        return ans;
+
+
+    }
+};
