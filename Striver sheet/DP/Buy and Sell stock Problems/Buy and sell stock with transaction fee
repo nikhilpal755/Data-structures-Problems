@@ -1,0 +1,33 @@
+https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/
+
+
+// Infinite Transactions 
+class Solution {
+    vector<int> nums;
+    int memo[50004][2];
+public:
+    int profitHelper(int idx, bool buy, int fee){
+        
+        if(idx >= nums.size())return 0;
+        if(memo[idx][buy] != -1)return memo[idx][buy];
+        
+        if(buy){
+            int buyCurrentStock = profitHelper(idx + 1,!buy,fee) - nums[idx];
+            int dontBuyCurrentStock= profitHelper(idx + 1, buy, fee);
+            memo[idx][buy] = max(buyCurrentStock , dontBuyCurrentStock);
+        }else{
+            int sellCurrentStock = profitHelper(idx + 1,!buy,fee) + nums[idx] - fee;
+            int dontSellCurrentStock= profitHelper(idx + 1, buy, fee);
+            memo[idx][buy] = max(sellCurrentStock , dontSellCurrentStock);
+            
+        }
+        return memo[idx][buy];
+    }
+    int maxProfit(vector<int>& prices, int fee) {
+        nums = prices;
+        memset(memo, -1, sizeof(memo));
+        
+        return profitHelper(0, 1, fee);
+        
+    }
+};
