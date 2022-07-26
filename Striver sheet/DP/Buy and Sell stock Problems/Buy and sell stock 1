@@ -1,0 +1,38 @@
+https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
+
+
+
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        
+        int n = prices.size();
+        
+        int maxProfit = 0;
+        int buyingPrice = prices[0]; // bought the first stock 
+        
+        // REMEMBER : we need to complete only 1 transaction
+        
+        // At each day : 
+            // check if current stock is optimal for selling or buying ?
+            
+            // check for selling 
+            // compute the profit(prices[i]-buyingPrice) using previous bought stock(buyingPrice)
+            // if a profit is greater than maxProfit then update the maxProfit
+            // else  we can't sell the stock at prices[i], because it is not optimal
+            
+            // check for buying
+            // compare the price of buyingPrice(previous bought stock) with current stock price(prices[i])
+            // if prices[i] < buyingPrice , then we can buy the stock at prices[i] and remove the previous
+            // bought stock because it is more optimal to buy stock at lowest price
+    
+         for(int i=1; i<n; i++){
+             if(prices[i] - buyingPrice > maxProfit){
+                maxProfit = max(maxProfit, prices[i] - buyingPrice);
+            }else if(prices[i] < buyingPrice){
+                 buyingPrice = prices[i];
+             }
+         }
+         return maxProfit;
+    }
+};
