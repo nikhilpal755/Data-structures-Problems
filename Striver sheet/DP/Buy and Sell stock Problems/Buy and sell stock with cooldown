@@ -1,5 +1,7 @@
 https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/
 
+
+------------------------------------------------
 class Solution {
     vector<int> nums;
     int memo[5004][2][2];
@@ -30,5 +32,37 @@ public:
         memset(memo, -1, sizeof(memo));
         
         return profitHelper(0, 1, 0);
+    }
+};
+
+------------ Reducing some space(removing cooldown variable --> just idx + 2 while selling stock) -------------
+
+class Solution {
+    vector<int> nums;
+    int memo[5004][2];
+public:
+    int profitHelper(int idx, bool buy){
+        
+        if(idx >= nums.size())return 0;
+        if(memo[idx][buy] != -1)return memo[idx][buy];
+        
+    
+        if(buy){
+            int buyCurrentStock = profitHelper(idx + 1,!buy) - nums[idx];
+            int dontBuyCurrentStock= profitHelper(idx + 1, buy);
+            memo[idx][buy] = max(buyCurrentStock , dontBuyCurrentStock);
+        }else{
+            int sellCurrentStock = profitHelper(idx + 2,!buy) + nums[idx];
+            int dontSellCurrentStock= profitHelper(idx + 1, buy);
+            memo[idx][buy] = max(sellCurrentStock , dontSellCurrentStock);
+            
+        }
+        return memo[idx][buy];
+    }
+    int maxProfit(vector<int>& prices) {
+        nums = prices;
+        memset(memo, -1, sizeof(memo));
+        
+        return profitHelper(0, 1);
     }
 };
