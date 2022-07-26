@@ -1,0 +1,26 @@
+https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/
+
+class Solution {
+     int memo[100002][2][2];
+     vector<int> nums;
+public:
+     int helper(int idx , int buy, int k){
+        
+        if(idx >= nums.size() or k <= 0)return 0;
+        if(memo[idx][buy][k-1] != -1)return memo[idx][buy][k-1];
+        if(buy){
+            memo[idx][buy][k-1] = max(helper(idx + 1, 1, k), -nums[idx] + helper(idx + 1, 0, k));
+        }else{
+            memo[idx][buy][k-1] = max(helper(idx + 1, 0, k), nums[idx] + helper(idx + 1, 1, k -1));
+        }
+        return memo[idx][buy][k-1];
+        
+    }
+    int maxProfit(vector<int>& prices) {
+        int buy = 1;
+        memset(memo, -1, sizeof(memo));
+        nums = prices;
+        int k = 2;
+        return helper(0, buy, k);
+    }
+};
