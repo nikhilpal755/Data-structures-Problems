@@ -1,0 +1,30 @@
+https://practice.geeksforgeeks.org/problems/sort-a-stack/1
+
+
+
+void correctOrderStack(stack<int>& s, int ele){
+    if(s.empty() or ele > s.top())s.push(ele);
+    else{
+        int a = s.top();
+        s.pop();
+        
+        correctOrderStack(s,ele);
+        
+        s.push(a);
+        
+    }
+}
+
+void SortedStack :: sort()
+{
+ 
+   if(!s.empty()){
+       int ele = s.top();
+       s.pop();
+       
+       sort();
+       
+       correctOrderStack(s, ele);
+   }
+   
+}
