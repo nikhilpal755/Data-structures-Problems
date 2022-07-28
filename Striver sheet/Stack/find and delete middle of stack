@@ -1,0 +1,155 @@
+https://www.geeksforgeeks.org/design-a-stack-with-find-middle-operation/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+// implement a stack that returns the middle element and delete the middle element in O(1) time
+
+class Mystack{
+    // implentation using doubly linked list
+    
+    struct Node{
+        int val;
+        Node* next=NULL;
+        Node* prev=NULL;
+        Node(int x){
+            this->val = x;
+        }
+    };
+    
+    Node* head = NULL;
+    Node* middle = NULL;
+    int size = 0;
+    
+    
+    public:
+    
+    void push(int num){
+        auto temp = new Node(num);
+        
+        if(size == 0){
+            head = temp;
+            middle = temp;
+            size++; 
+            return;
+        }else{
+           
+            head -> next = temp;
+            temp -> prev = head;
+            
+            // where should be the middleElement ?
+            
+            if(size % 2){// only moving *middle when sz of stack is odd 
+                middle = middle -> next;
+            }
+            
+            head = head -> next;
+            size++;
+        }
+    }
+    
+    int pop(){
+        int data = -1;
+
+        if(size > 0){
+            data = head -> val;
+            if(size == 1){
+                head = NULL;
+                middle = NULL;
+         
+            }else {
+    
+                head = head ->prev;
+                head -> next = NULL;
+                if(size % 2 == 0){
+                    // move the middle pointer one step before
+                    middle = middle -> prev;
+                }
+                
+            }
+            size--;
+        }
+        return data;
+    }
+    
+    
+    int middleElement(){
+        if(size == 0)return -1;
+        return middle -> val;
+    }
+    
+    void deleteMiddleElement(){
+        // cout << size << endl;
+        if(size > 0){
+            auto temp = middle;
+            if(size == 1){
+                head= NULL;
+                middle = NULL;
+            }else if(size % 2 != 0){
+                auto pre = middle -> prev;
+                pre -> next = temp -> next;
+                temp -> next -> prev = pre;
+                middle = middle -> next;
+                delete(temp);
+            }else{
+                auto pre = middle -> prev;
+                pre -> next = temp -> next;
+                middle = middle -> prev;
+                if(size != 2){
+                 temp -> next -> prev = pre;   
+                }else{
+                    head= head ->prev;
+                }
+                delete(temp);
+            }
+            size--;
+        }
+    }
+    
+    void displayStack(){
+        auto temp = head;
+        
+        while(temp){
+            cout << temp -> val << " ";
+            temp = temp -> prev;
+        }
+        cout << endl;
+    }
+    
+
+};
+
+
+
+int main(){
+    Mystack st;
+    st.push(12);
+    st.push(23);
+    // cout << st.middleElement() << endl;
+    
+    // cout << st.pop() << endl;
+    
+    st.push(43);
+    st.push(-1);
+    st.push(2);
+    st.push(23);
+    st.displayStack();
+    
+    cout<< st.middleElement() << endl;
+    
+    st.deleteMiddleElement();
+    st.displayStack();
+    
+    // cout << st.middleElement() << endl;
+    st.deleteMiddleElement();
+    // cout << st.middleElement() << endl;
+    st.deleteMiddleElement();
+    st.deleteMiddleElement();
+    st.displayStack();
+    // cout << st.middleElement() << endl;
+      st.deleteMiddleElement();
+      st.displayStack();
+    
+    
+    return 0;
+}
