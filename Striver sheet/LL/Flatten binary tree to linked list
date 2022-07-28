@@ -1,0 +1,23 @@
+https://leetcode.com/problems/flatten-binary-tree-to-linked-list/
+
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        
+        TreeNode* curr = root;
+        
+        while(curr){
+            TreeNode* node = curr -> left;// node should point to the rightmost node in the left subtree
+            if(curr -> left){
+                while(node and node -> right){
+                    node = node -> right;
+                }  
+                node -> right = curr -> right;
+                curr -> right = curr -> left;
+                curr -> left = NULL;
+            }
+            curr = curr -> right;
+        }
+        
+    }
+};
