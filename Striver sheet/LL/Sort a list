@@ -1,0 +1,42 @@
+https://leetcode.com/problems/sort-list/
+
+
+
+class Solution {
+public:
+    ListNode* findMid(ListNode* head){
+        ListNode* fp = head, *sp = head;
+        
+        ListNode* prev = NULL;// very crucial to break the list [head, mid][mid, last]
+        while(fp and fp -> next){
+            prev = sp;
+            sp = sp -> next;
+            fp = fp -> next -> next;
+        }
+        if(prev)prev -> next = NULL;
+        return sp;
+    }
+    ListNode* merge(ListNode* l1, ListNode* l2){
+        if(!l1 and !l2)return NULL;
+        if(!l1)return l2;
+        if(!l2)return l1;
+        
+        if(l1 -> val < l2 -> val){
+            l1 -> next = merge(l1 -> next, l2);
+            return l1;
+        }else{
+            l2 -> next = merge(l1, l2 -> next);
+            return l2;
+        }
+    }
+    ListNode* sortList(ListNode* head) {
+        if(!head or !head -> next)return head;// single element is already sorted
+        
+        ListNode* mid = findMid(head);
+        ListNode* left= sortList(head);
+        ListNode* right = sortList(mid);
+        
+        return merge(left, right);
+    }
+
+};
