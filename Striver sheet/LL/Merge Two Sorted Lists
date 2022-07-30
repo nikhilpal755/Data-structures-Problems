@@ -1,0 +1,23 @@
+https://leetcode.com/problems/merge-two-sorted-lists/
+
+
+
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* p, ListNode* q) {
+    
+        if(p == NULL and q == NULL)return NULL;
+        if(p == NULL)return q;
+        if(q == NULL)return p;
+        
+        // ListNode* temp;
+        if(p -> val < q -> val){
+           p -> next = mergeTwoLists(p -> next, q);
+            return p;
+        }else{
+           q -> next = mergeTwoLists(p, q -> next);
+            return q;
+        }
+       
+    }
+};
