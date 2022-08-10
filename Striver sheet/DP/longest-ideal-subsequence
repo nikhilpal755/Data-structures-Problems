@@ -1,0 +1,41 @@
+https://leetcode.com/problems/longest-ideal-subsequence/
+
+
+https://leetcode.com/problems/longest-ideal-subsequence/discuss/2390850/Easy-to-understand-or-DP-or-LIS-or-O(n)
+
+
+class Solution {
+public:
+    int longestIdealString(string s, int k) {
+        
+        int n = s.size();
+        
+        vector<int> dp(26, 0);
+        
+        // dp[i] => longest ideal susbsequence using character at index i
+        int longestIdealSubseq = 1;
+        for(int i=0;i<n; i++){
+            int idx = s[i] - 'a';// index for current character
+            dp[idx]++;
+            for(int j=max(0, idx - k); j<=min(25, idx + k); j++){
+                if(j != idx){
+                    dp[idx] = max(dp[idx], dp[j] + 1);
+                }
+            }
+            longestIdealSubseq = max(longestIdealSubseq, dp[idx]);
+         
+           
+            
+        }
+        
+        
+        
+        
+        return longestIdealSubseq;
+        
+        
+        
+        
+       
+    }
+};
