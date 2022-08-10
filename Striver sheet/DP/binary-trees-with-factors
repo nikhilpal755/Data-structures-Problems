@@ -1,0 +1,86 @@
+https://leetcode.com/problems/binary-trees-with-factors/
+
+================ Memoized =======================
+class Solution {
+    unordered_map<int, long long int> memo;// caching the value
+    unordered_set<long long int> s;
+    vector<int> nums;
+    const int mod = 1e9 + 7;
+public:
+    int countBinaryTrees(int curr){
+        
+        if(memo.find(curr) != memo.end())return memo[curr];// if computed before
+        
+        long long cnt = 1;
+        // number of binary trees for curr = number of binary trees for left subtree * number of binary trees for right subtree + 1(taking curr alone)
+        for(int i=0;i <nums.size(); i++){
+            if(nums[i] < curr and curr % nums[i] == 0 ){// left node => nums[i]
+                // check if right node is present or not
+                if(s.find(curr/nums[i]) != s.end()){
+                    cnt = (cnt + (long long)countBinaryTrees(nums[i])*countBinaryTrees(curr/nums[i]))%mod;
+                    
+                }
+            }
+        }
+        
+        return memo[curr] = cnt;
+    }
+    int numFactoredBinaryTrees(vector<int>& arr) {
+     
+    // 2, 3, 6, 18 => ans = 12
+        sort(arr.begin(), arr.end());
+        int n = arr.size();
+        nums= arr;
+        
+        unordered_set<long long int> st(arr.begin(), arr.end());
+        s = st;
+        long long ans = 0;
+        for(int i=0;i<n; i++){
+          // count binary trees by taking current arr[i] as root node
+           ans = (ans + countBinaryTrees(arr[i]))%mod;
+        }
+        return (int)ans % mod;
+        
+    }
+};
+
+
+================= Bottom Up ===================
+
+class Solution {
+public:
+    int numFactoredBinaryTrees(vector<int>& arr) {
+        const int mod = 1e9 + 7;
+        
+ 
+        sort(arr.begin(), arr.end());
+        int n = arr.size();
+  
+        vector<long long> dp(n, 1);
+        map<int,int> m;
+        for(int i=0;i<n ;i++){
+            m[arr[i]] = i;
+        }
+        
+        // dp[i] => number of binary tree using arr[i] as root
+        // arr[i] => root node , arr[j] => left node , arr[i]/arr[j] => right node
+        for(int i =0;i<n ;i++){
+            for(int j=0;j <i ;j++){
+            
+                if(arr[i] % arr[j] == 0){// arr[j] => left node
+                    int right = arr[i]/arr[j];
+                    
+                    if(m.find(right) != m.end()){// if right node exits
+                        dp[i] = (dp[i] + dp[j] * dp[m[right]]) % mod;
+                    }
+                }
+            }
+        }
+        
+        int ans = 0;
+        for(auto X : dp)ans = (ans + X) % mod;
+        
+        return ans % mod;
+        
+    }
+};
