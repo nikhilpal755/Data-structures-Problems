@@ -1,0 +1,51 @@
+https://leetcode.com/problems/kth-smallest-element-in-a-bst/
+
+
+--------------------- MORRIS INORDER TRAVERSAL (variaiton) ------------------------------------
+class Solution {
+   
+public:
+    int kthSmallest(TreeNode* root, int k) {
+    
+        ----------------------------------------------------
+        // O(N) space : inorder Traversal(recursion stack space)
+        
+        // O(1) space : inoder traversal + threaded Binary tree
+        
+        // if curr -> left != NULL
+        //      find the rightmost node in the left subtree -> make thread(join to curr)
+        //      curr = curr ->left
+        //      make temp -> left= NULL (temp = curr inititally)
+        
+        // if curr -> left == NULL
+        //      k--, if k == 0 , required ans
+        -----------------------------------------------------
+        
+        auto curr= root;
+        while(curr){
+            auto node= curr -> left;
+            auto temp = curr;
+            
+            while(node and node -> right){
+                node = node -> right;
+            }
+            
+            if(node){// curr -> left != NULL
+                // make a thread
+                node -> right = curr;
+                curr =curr -> left;
+                temp -> left = NULL;
+            }else{// curr -> left == NULL
+                k--;
+                if(k == 0){
+                    return curr -> val;
+                }
+                curr = curr -> right;
+            }
+        }
+        
+        return -1;
+        
+        
+    }
+};
