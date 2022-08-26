@@ -1,0 +1,53 @@
+https://leetcode.com/problems/split-array-into-consecutive-subsequences/
+
+// Clean Explanation : https://www.youtube.com/watch?v=Ty8EZlxVNC8
+
+class Solution {
+public:
+    bool isPossible(vector<int>& nums) {
+        
+        // two maps -> availability and vacancy map
+        
+        unordered_map<int,int> am, vm;
+        
+        for(auto X : nums)am[X]++;
+        
+        for(auto X : nums){
+            if(am.find(X) != am.end()){
+                
+                if(vm.find(X) != vm.end()){
+                    // vacancy is there for current element 
+                    // we can accomodate current element into existed group
+                    
+                    vm[X]--;
+                    if(vm[X] == 0)vm.erase(X);
+                    
+                    // vacancy for next element is created
+                    vm[X + 1]++;
+                    am[X]--;
+                    if(am[X] == 0)am.erase(X);
+                }else{
+                    // no vacancy for current element
+                    // create a new group
+                    
+                    // we need 3 consecutive elements
+                    if(am.find(X + 1) != am.end() and am.find(X + 2) != am.end()){
+                        am[X]--;
+                        am[X + 1]--;
+                        am[X + 2]--;
+                        if(am[X] == 0)am.erase(X);
+                        if(am[X + 1] == 0)am.erase(X + 1);
+                        if(am[X + 2] == 0)am.erase(X + 2);
+                        // we need vacancy for X + 3
+                        vm[X + 3]++;
+                    }else{
+                        // cout << X << " ";
+                        return false;
+                    }
+                }
+            }
+        }
+        
+        return true;
+    }
+};
