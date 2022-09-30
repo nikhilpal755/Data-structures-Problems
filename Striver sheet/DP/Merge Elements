@@ -1,0 +1,55 @@
+https://www.interviewbit.com/problems/merge-elements/
+
+Vedio : https://youtu.be/TFdclijv4Mg
+
+-------------------- DP+ Prefix Sum -------------------------
+Memoized Code
+
+int dp[202][202] ;
+
+
+
+int minCost(int i , int j , vector<int>& prefix, vector<int>&a){
+
+    if(i >= j)return 0;
+
+    if(dp[i][j] != -1)return dp[i][j];
+
+    
+
+    int sum = prefix[j] - prefix[i] + a[i];
+
+    int ans = INT_MAX;
+
+    for(int k=i; k<j; k++){
+
+        int temp = minCost(i, k, prefix, a) + minCost(k + 1, j, prefix, a) + sum;
+
+        ans = min(ans, temp);
+
+    }
+
+    dp[i][j] = ans;
+
+    return dp[i][j];
+
+}
+
+int Solution::solve(vector<int> &A) {
+
+    int n = A.size();
+
+    vector<int> prefix(n);
+
+    memset(dp, -1, sizeof(dp));
+
+    prefix[0] = A[0];
+
+    for(int i=1; i<n; i++){
+
+        prefix[i] = prefix[i - 1] + A[i];
+
+    }   
+    return minCost(0, n - 1, prefix, A); // find min
+
+}
