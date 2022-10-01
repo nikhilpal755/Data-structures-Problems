@@ -1,0 +1,57 @@
+
+Vedio : Pepcoding
+
+-------------------------------------------------
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main()
+{
+    // cout<<"Hello World";
+    vector<vector<int>> mat={{1,2,3,4},
+        {5,6,7,8},
+        {9,10,11,12},
+        {13,14,15,16}
+    };
+    
+    // find the spiral of the matrix
+    
+    int minRow = 0, minCol = 0, maxRow = mat.size() - 1, maxCol = mat[0].size() - 1;
+    int tot = mat.size() * mat[0].size();
+    int cnt= 0;
+    while(cnt < tot){
+        // top wall
+        for(int i=minRow, j = minCol; j <= maxCol and cnt < tot; j++){
+            cout << mat[i][j] << " ";
+            cnt++;
+        }
+        minRow++;
+        
+        // right wall
+
+        for(int i=minRow, j = maxCol ; i <= maxRow and cnt < tot; i++){
+            cout << mat[i][j] << " ";
+            cnt++;
+        }
+        maxCol--;
+        // bottom wall
+        for(int i=maxRow, j = maxCol; j >= minCol and cnt < tot ; j--){
+            cout << mat[i][j] << " ";
+            cnt++;
+        }
+        maxRow--;
+        // left wall
+     
+        for(int i=maxRow, j = minCol; i >= minRow and cnt < tot; i--){
+            cout << mat[i][j] << " ";
+            cnt++;
+        }
+        minCol++;
+        
+    }
+    
+    
+
+    return 0;
+}
